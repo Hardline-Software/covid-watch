@@ -1,24 +1,48 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "start": "graphql-codegen && expo start",
+    "android": "graphql-codegen && expo start --android",
+    "ios": "graphql-codegen && expo start --ios",
+    "web": "graphql-codegen && expo start --web",
+    "generate": "graphql-codegen"
   },
   "dependencies": {
+    "@apollo/client": "^3.1.3",
+    "@lukeramsden/aws-appsync-auth-link": "^3.0.0",
+    "@lukeramsden/aws-appsync-subscription-link": "^3.0.0",
+    "@react-native-community/cli-debugger-ui": "4.7.0",
+    "@react-native-community/netinfo": "5.9.2",
+    "@types/styled-components": "^5.1.2",
+    "aws-amplify": "^3.0.23",
+    "aws-amplify-react-native": "^4.2.4",
     "expo": "~38.0.8",
     "expo-status-bar": "^1.0.2",
+    "graphql": "^15.3.0",
+    "prop-types": "^15.7.2",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+    "react-native-safe-area-context": "~3.0.7",
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
+    "@graphql-codegen/cli": "^1.17.7",
+    "@graphql-codegen/plugin-helpers": "^1.17.7",
+    "@graphql-codegen/typescript": "^1.17.7",
+    "@graphql-codegen/typescript-document-nodes": "^1.17.7",
+    "@graphql-codegen/typescript-operations": "^1.17.7",
+    "@graphql-codegen/typescript-react-apollo": "^2.0.5",
     "@types/react": "~16.9.41",
     "@types/react-native": "~0.62.13",
+    "@typescript-eslint/eslint-plugin": "^3.8.0",
+    "@typescript-eslint/parser": "^3.8.0",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.5",
+    "prettier": "^2.0.5",
     "typescript": "~3.9.5"
   },
   "private": true

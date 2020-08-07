@@ -1,0 +1,28 @@
+overwrite: true
+schema:
+  - aws.graphql
+  - amplify/backend/api/covidwatch/build/schema.graphql
+documents: graphql/**/*.graphql
+generates:
+  generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      noNamespaces: true
+      namingConvention:
+        enumValues: keep
+      scalars:
+        AWSDate: string
+        AWSTime: string
+        AWSDateTime: string
+        AWSTimestamp: string
+        AWSEmail: string
+        AWSJSON: '{ [key: string]: any }'
+        AWSURL: string
+        AWSPhone: string
+        AWSIPAddress: string
