@@ -1,10 +1,10 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "graphql-codegen && expo start",
-    "android": "graphql-codegen && expo start --android",
-    "ios": "graphql-codegen && expo start --ios",
-    "web": "graphql-codegen && expo start --web",
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
     "generate": "graphql-codegen"
   },
   "dependencies": {
