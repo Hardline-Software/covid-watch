@@ -5,12 +5,13 @@ import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import LogInPage from './pages/LogInPage'
+import SignUpPage from './pages/SignUpPage'
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <LogInPage />
+        <SignUpPage />
       </NavigationContainer>
       <StatusBar style="auto" />
     </SafeAreaProvider>
