@@ -8,7 +8,7 @@ const LogInPage = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/icon.png')} style={styles.icon} />
+      <Image source={require('../assets/logo.png')} style={styles.icon} />
       <View>
         <View style={(styles.section, styles.split)}>
           <TextInput placeholder="Email" style={styles.textfield} onChangeText={(newVal: string) => setEmail(newVal)}>
@@ -17,6 +17,7 @@ const LogInPage = () => {
           <TextInput
             placeholder="Password"
             style={styles.textfield}
+            secureTextEntry={true}
             onChangeText={(newVal: string) => setPassword(newVal)}
           >
             {password}
