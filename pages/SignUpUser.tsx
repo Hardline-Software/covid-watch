@@ -3,25 +3,32 @@ import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TextInput } from 'react-native-gesture-handler'
 
-const SignUpPage = () => {
+const SignUpUser = () => {
 
-  const [date, setDate] = useState(new Date())
+  const [first, setFirst] = useState('')
+  const [last, setLast] = useState('')
+  const [DOB, setDOB] = useState('')
+  const [sex, setSex] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  
+
   
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.icon} source={require('../assets/logo.png')} />
       <View style={styles.horz}>
-        <TextInput placeholder='First' style={styles.input2}></TextInput>
-        <TextInput placeholder='Last' style={styles.input2}></TextInput>
+        <TextInput placeholder='First' style={styles.input2} onChangeText={(newVal: string) => setFirst(newVal)}> {first} </TextInput>
+        <TextInput placeholder='Last' style={styles.input2} onChangeText={(newVal: string) => setLast(newVal)}> {last} </TextInput>
       </View>
       <View style={styles.horz}>
-        <TextInput placeholder='Date of Birth' style={styles.input2}></TextInput>
-        <TextInput placeholder='Sex' style={styles.input2}></TextInput>
+        <TextInput placeholder='Date of Birth' style={styles.input2} onChangeText={(newVal: string) => setDOB(newVal)}> {DOB} </TextInput>
+        <TextInput placeholder='Sex' style={styles.input2} onChangeText={(newVal: string) => setSex(newVal)}> {sex} </TextInput>
       </View>
       <View style={styles.vert}>
-        <TextInput placeholder='Email' style={styles.input1}></TextInput>
+        <TextInput placeholder='Email' style={styles.input1} onChangeText={(newVal: string) => setEmail(newVal)}> {email} </TextInput>
         <TextInput placeholder='Password' style={styles.input1} secureTextEntry={true}></TextInput>
-        <TextInput placeholder='Confirm Password' style={styles.input1} secureTextEntry={true}></TextInput>
+        <TextInput placeholder='Confirm Password' style={styles.input1} secureTextEntry={true} onChangeText={(newVal: string) => setPassword(newVal)}> {password} </TextInput>
       </View>
       <TouchableOpacity style={styles.signup}>
         <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>Sign Up</Text>
@@ -83,4 +90,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default SignUpPage
+export default SignUpUser

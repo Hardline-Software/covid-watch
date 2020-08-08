@@ -10,21 +10,11 @@ const SignUpPage = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.icon} source={require('../assets/logo.png')} />
-      <View style={styles.horz}>
-        <TextInput placeholder='First' style={styles.input2}></TextInput>
-        <TextInput placeholder='Last' style={styles.input2}></TextInput>
-      </View>
-      <View style={styles.horz}>
-        <TextInput placeholder='Date of Birth' style={styles.input2}></TextInput>
-        <TextInput placeholder='Sex' style={styles.input2}></TextInput>
-      </View>
-      <View style={styles.vert}>
-        <TextInput placeholder='Email' style={styles.input1}></TextInput>
-        <TextInput placeholder='Password' style={styles.input1} secureTextEntry={true}></TextInput>
-        <TextInput placeholder='Confirm Password' style={styles.input1} secureTextEntry={true}></TextInput>
-      </View>
-      <TouchableOpacity style={styles.signup}>
-        <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>Sign Up</Text>
+      <TouchableOpacity style={styles.button}>
+        <Text style={{color: 'black', fontSize: 30}}>User</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+        <Text style={{color: 'black', fontSize: 30}}>Organization</Text>
       </TouchableOpacity>
     </SafeAreaView>
   ) 
@@ -44,41 +34,14 @@ const styles = StyleSheet.create({
     height: 120,
     width: 120
   },
-  horz: {
-    flexDirection: 'row'
-  },
-  vert: {
-    width: '100%',
-    alignItems: 'center'
-  },
-  signup: {
-    width: 120,
+  button: {
+    width: '50%',
     alignItems: 'center',
     backgroundColor: 'deepskyblue',
-    borderRadius: 15,
+    borderRadius: 7.5,
     paddingVertical: 5,
-    marginTop: 50,
+    marginTop: 10,
     textAlign: 'center'
-  },
-  input1: {
-    color: 'black',
-    backgroundColor: '#F2F2F2',
-    fontSize: 18,
-    borderRadius: 7.5,
-    padding: 15,
-    margin: '2%',
-    textAlign: 'center',
-    width: '80%'
-  },
-  input2: {
-    color: 'black',
-    backgroundColor: '#F2F2F2',
-    fontSize: 18,
-    borderRadius: 7.5,
-    padding: 15,
-    margin: '2%',
-    textAlign: 'center',
-    width: '38%'
   }
 })
 
