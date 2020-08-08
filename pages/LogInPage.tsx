@@ -10,7 +10,7 @@ const LogInPage = () => {
         <View>
           <TextInput></TextInput>
         </View>
-        <View>
+        <View style={}>
           <Text>Sign Up</Text>
         </View>
       </View>
