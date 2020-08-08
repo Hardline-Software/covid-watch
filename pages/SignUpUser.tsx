@@ -10,6 +10,7 @@ const SignUpUser = () => {
   const [sex, setSex] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPswd, setConfirmPswd] = useState('')
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +53,15 @@ const SignUpUser = () => {
           onChangeText={(newVal: string) => setPassword(newVal)}
         ></TextInput>
       </View>
-      <TouchableOpacity style={styles.signup}>
+      <TouchableOpacity
+        style={styles.signup}
+        onPress={() => {
+          if (password !== confirmPswd) {
+            // do something
+            return
+          }
+        }}
+      >
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Sign Up</Text>
       </TouchableOpacity>
     </SafeAreaView>

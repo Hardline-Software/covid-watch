@@ -19,9 +19,7 @@ const LogInPage = () => {
             style={styles.textfield}
             secureTextEntry={true}
             onChangeText={(newVal: string) => setPassword(newVal)}
-          >
-            {password}
-          </TextInput>
+          ></TextInput>
           <TouchableOpacity style={styles.button}>
             <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Sign In</Text>
           </TouchableOpacity>
