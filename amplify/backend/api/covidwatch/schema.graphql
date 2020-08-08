@@ -1,0 +1,59 @@
+enum Sex {
+  MALE
+  FEMALE
+}
+
+type Organization @model(
+    queries: {
+      get: "organization"
+      list: "organizations"
+    }
+  )
+  @key(fields: ["id"])
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"] }
+      { allow: groups, groupsField: "userGroupId", operations: [read] }
+      { allow: groups, groupsField: "managementGroupId" }
+      { allow: private, provider: iam }
+    ]
+  )
+{
+  id: ID!
+  name: String!
+  description: String
+  photoUrl: String
+  url: String
+  managementGroupId: ID!
+  userGroupId: ID!
+}
+
+type User @model(
+    queries: {
+      get: "user"
+      list: "users"
+    }
+    subscriptions: {
+      onCreate: ["newUser"]
+      onUpdate: ["userUpdated"]
+      onDelete: ["userDeleted"]
+    }
+  )
+  @key(fields: ["id"])
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "id" }
+      { allow: groups, groups: ["admins"] }
+      { allow: groups, groupsField: "managementGroupId" }
+      { allow: private, provider: iam }
+    ]
+  ) 
+{
+  id: ID!
+  givenName: String!
+  familyName: String!
+  email: String!
+  sex: Sex!
+  phone: String
+  managementGroupId: ID!
+}
