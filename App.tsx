@@ -6,15 +6,16 @@ import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import LogInPage from './pages/LogInPage'
 import UserDashboardPage from './pages/UserDashboardPage'
-import SignUpUser from './pages/SignUpUser'
-import SignUpOrg from './pages/SignUpOrg'
+import UserSignUpPAge from './pages/UserSignUpPage'
+import OrgSignUpPage from './pages/OrgSignUpPage'
+import OrgDashboardPage from './pages/OrgDashboardPage'
 import PreSignUpPage from './pages/PreSignUpPage'
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <UserDashboardPage />
+        <OrgDashboardPage />
       </NavigationContainer>
       <StatusBar style="auto" />
     </SafeAreaProvider>

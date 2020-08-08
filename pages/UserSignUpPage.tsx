@@ -3,7 +3,7 @@ import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TextInput } from 'react-native-gesture-handler'
 
-const SignUpUser = () => {
+const UserSignUpPage = () => {
   const [first, setFirst] = useState('')
   const [last, setLast] = useState('')
   const [DOB, setDOB] = useState('')
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SignUpUser
+export default UserSignUpPage

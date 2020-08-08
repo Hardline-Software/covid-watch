@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { TextInput } from 'react-native-gesture-handler'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-const SignUpUser = () => {
+const OrgSignUpPage = () => {
   const [organization, setOrganization] = useState('')
   const [country, setCountry] = useState('')
   const [state, setState] = useState('')
@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SignUpUser
+export default OrgSignUpPage
