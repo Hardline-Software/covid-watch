@@ -19,13 +19,13 @@ type Organization @model(
     ]
   )
 {
-  id: ID!
+  id: ID! @auto(updatable: true)
   name: String!
   description: String
   photoUrl: String
   url: String
-  managementGroupId: ID!
-  userGroupId: ID!
+  managementGroupId: ID! @auto
+  userGroupId: ID! @auto
   users: [User!]! @connection(keyName: "byOrganization", fields: ["id"])
   healthChecks: [HealthCheck!]! @connection(keyName: "byOrganization", fields: ["id"])
   testResults: [TestResult!]! @connection(keyName: "byOrganization", fields: ["id"])
@@ -58,6 +58,7 @@ type User @model(
   id: ID!
   givenName: String!
   familyName: String!
+  photoUrl: String
   email: String!
   sex: Sex!
   phone: String
@@ -65,7 +66,8 @@ type User @model(
   organization: Organization @connection(fields: ["organizationId"])
   healthChecks: [HealthCheck!]! @connection(keyName: "byUser", fields: ["id"])
   testResults: [TestResult!]! @connection(keyName: "byUser", fields: ["id"])
-  managementGroupId: ID!
+  quarantines: [Quarantine!]! @connection(keyName: "byUser", fields: ["id"])
+  managementGroupId: ID! @auto
 }
 
 enum Symptom {
@@ -105,16 +107,16 @@ type HealthCheck @model(
     ]
   )
 {
-  id: ID!
+  id: ID! @auto(updatable: true)
   temperature: Float!
   temperatureF: Float @function(name: "temperature-${env}")
   symptoms: [Symptom!]!
-  createdAt: AWSDateTime!
+  createdAt: AWSDateTime! @auto
   userId: ID!
   user: User @connection(fields: ["userId"])
   organizationId: ID!
   organization: Organization @connection(fields: ["organizationId"])
-  managementGroupId: ID!
+  managementGroupId: ID! @auto
 }
 
 enum TestResultStatus {
@@ -153,20 +155,20 @@ type TestResult @model(
     ]
   )
 {
-  id: ID!
+  id: ID! @auto(updatable: true)
   status: TestResultStatus!
   location: String
   type: TestType!
   retest: Boolean!
-  createdAt: AWSDateTime!
+  createdAt: AWSDateTime! @auto
   updatedAt: AWSDateTime
-  startedAt: AWSDateTime
-  completedAt: AWSDateTime
+  started: AWSDate!
+  completed: AWSDate
   userId: ID!
   user: User @connection(fields: ["userId"])
   organizationId: ID!
   organization: Organization @connection(fields: ["organizationId"])
-  managementGroupId: ID!
+  managementGroupId: ID! @auto
 }
 
 enum QuarantineLocation {
@@ -198,15 +200,15 @@ type Quarantine @model(
     ]
   )
 {
-  id: ID!
-  start: AWSDateTime!
-  end: AWSDateTime!
+  id: ID! @auto(updatable: true)
+  start: AWSDate!
+  end: AWSDate!
   location: QuarantineLocation!
   userId: ID!
   user: User @connection(fields: ["userId"])
   organizationId: ID!
   organization: Organization @connection(fields: ["organizationId"])
-  managementGroupId: ID!
+  managementGroupId: ID! @auto
 }
 
 type VaccineDose @model(
@@ -233,7 +235,7 @@ type VaccineDose @model(
     ]
   )
 {
-  id: ID!
+  id: ID! @auto(updatable: true)
   date: AWSDate!
   complete: Boolean!
   vaccinationId: ID!
@@ -242,7 +244,7 @@ type VaccineDose @model(
   user: User @connection(fields: ["userId"])
   organizationId: ID!
   organization: Organization @connection(fields: ["organizationId"])
-  managementGroupId: ID!
+  managementGroupId: ID! @auto
 }
 
 type Vaccination @model(
@@ -268,14 +270,14 @@ type Vaccination @model(
     ]
   )
 {
-  id: ID!
+  id: ID! @auto(updatable: true)
   vaccine: String!
   userId: ID!
   user: User @connection(fields: ["userId"])
   organizationId: ID!
   organization: Organization @connection(fields: ["organizationId"])
-  managementGroupId: ID!
-  createdAt: AWSDateTime!
+  managementGroupId: ID! @auto
+  createdAt: AWSDateTime! @auto
   updatedAt: AWSDateTime
   doses: [VaccineDose!]! @connection(keyName: "byVaccination", fields: ["id"])
 }

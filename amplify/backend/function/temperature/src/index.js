@@ -1,1 +1,1 @@
-exports.handler = async (event) => event.source * (9 / 5) + 32
+exports.handler = async (event) => event.source.temperature * (9 / 5) + 32
