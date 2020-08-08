@@ -4416,6 +4416,11 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
+charenc@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
+  integrity sha1-wKHS86cJLgN3S/qD8UwPxXkKhmc=
+
 chokidar@3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.1.tgz#e905bdecf10eaa0a0b1db0c664481cc4cbc22ba1"
@@ -4510,6 +4515,11 @@ clone@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
+
+cloudform-types@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/cloudform-types/-/cloudform-types-4.2.0.tgz#698c98a1468bd8fe9c1c275b2e65720f572ca401"
+  integrity sha512-i7fmpsOtrMzF4z3Ltpqn9Khi6pgSxNCMqqsXLXWbaZsczky7vA9mkq/Z2bdMUu5x4Eaj5wvvKc95ENZ0dtN/Uw==
 
 code-point-at@^1.0.0:
   version "1.1.0"
@@ -4784,6 +4794,11 @@ cross-spawn@^7.0.2:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+crypt@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/crypt/-/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
+  integrity sha1-iNf/fsDfuG9xPch7u0LQRNPmxBs=
+
 crypto-js@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
@@ -4874,6 +4889,11 @@ deep-assign@^3.0.0:
   integrity sha512-YX2i9XjJ7h5q/aQ/IM9PEwEnDqETAIYbggmdDB3HLTlSgo1CxPsj6pvhPG68rq6SVE0+p+6Ywsm5fTYNrYtBWw==
   dependencies:
     is-obj "^1.0.0"
+
+deep-diff@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/deep-diff/-/deep-diff-1.0.2.tgz#afd3d1f749115be965e89c63edc7abb1506b9c26"
+  integrity sha512-aWS3UIVH+NPGCD1kki+DCU9Dua032iSsO43LqQpcs4R3+dVv7tX0qBGjiVHJHjplsoUM2XRO/KB92glqc68awg==
 
 deep-equal@^2.0.3:
   version "2.0.3"
@@ -6021,6 +6041,15 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.3
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
   integrity sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
 
+graphql-auto-transformer@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/graphql-auto-transformer/-/graphql-auto-transformer-1.3.1.tgz#11530577de7ac29599b98ea7ba7c82830f91fba3"
+  integrity sha512-3Ri4lMJLzVYBDvREYNh5vTEXam1W9QC555cxpAFf+RfglmryWsDkOWk0fncVarTg/PbxoVnk6Sw75Ct0QNK+kA==
+  dependencies:
+    graphql "^14.5.8"
+    graphql-transformer-common "^4.12.0"
+    graphql-transformer-core "^6.12.0"
+
 graphql-config@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/graphql-config/-/graphql-config-3.0.3.tgz#58907c65ed7d6e04132321450b60e57863ea9a5f"
@@ -6037,6 +6066,11 @@ graphql-config@^3.0.2:
     string-env-interpolation "1.0.1"
     tslib "^2.0.0"
 
+graphql-mapping-template@4.15.0:
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/graphql-mapping-template/-/graphql-mapping-template-4.15.0.tgz#3d2181b7539a16633eac48bb7b175104dd87ff18"
+  integrity sha512-TF/nr1fFbHS6LjWMtt7aBM/CykM67AlCMTvLoMZvwKs6h8NkmKrSwwmtq42y3h1p6EjzwgUVZzpT2cNhy0uo2w==
+
 graphql-request@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-2.0.0.tgz#8dd12cf1eb2ce0c80f4114fd851741e091134862"
@@ -6047,6 +6081,27 @@ graphql-tag@2.11.0, graphql-tag@^2.11.0:
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.11.0.tgz#1deb53a01c46a7eb401d6cb59dec86fa1cccbffd"
   integrity sha512-VmsD5pJqWJnQZMUeRwrDhfgoyqcfwEkvtpANqcoUG8/tOLkwNgU9mzub/Mc78OJMhHjx7gfAMTxzdG43VGg3bA==
 
+graphql-transformer-common@4.17.7, graphql-transformer-common@^4.12.0:
+  version "4.17.7"
+  resolved "https://registry.yarnpkg.com/graphql-transformer-common/-/graphql-transformer-common-4.17.7.tgz#b6ae71bf998ad7f09b1f76ba842c15769f85a34e"
+  integrity sha512-5h8jYRlYkSJOHcgX9ZenmMyU2+XQ/yr3E8rG58dzcywZC0GkrcQIxekLAD4YaX1FLudj9B+ADMEK6k0qaQ3dkg==
+  dependencies:
+    graphql "^14.5.8"
+    graphql-mapping-template "4.15.0"
+    md5 "^2.2.1"
+
+graphql-transformer-core@^6.12.0:
+  version "6.21.0"
+  resolved "https://registry.yarnpkg.com/graphql-transformer-core/-/graphql-transformer-core-6.21.0.tgz#40d138ec442b49260d2ecab2b574b97cf1b2cc9b"
+  integrity sha512-OiA7wsZ+M/db1GGLniufvZs4IsViZUHkf/STM/V2BzE/UByFXE3D3mGfYWExMVgpAJx3zcTikxVLpym31IYEvw==
+  dependencies:
+    cloudform-types "^4.2.0"
+    deep-diff "^1.0.2"
+    fs-extra "^8.1.0"
+    glob "^7.1.6"
+    graphql "^14.5.8"
+    graphql-transformer-common "4.17.7"
+
 graphql@14.0.0:
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.0.0.tgz#4ee771c5266d08cb75df2d3ac41e8dd51ce3d599"
@@ -6054,7 +6109,7 @@ graphql@14.0.0:
   dependencies:
     iterall "^1.2.2"
 
-graphql@^14.0.0:
+graphql@^14.0.0, graphql@^14.5.8:
   version "14.7.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.7.0.tgz#7fa79a80a69be4a31c27dda824dc04dac2035a72"
   integrity sha512-l0xWZpoPKpppFzMfvVyFmp9vLN7w/ZZJPefUicMCepfJeQ8sMcztloGYY9DfjVPo6tIUDzU5Hw3MUbIjj9AVVA==
@@ -6438,7 +6493,7 @@ is-boolean-object@^1.0.0:
   resolved "https://registry.yarnpkg.com/is-boolean-object/-/is-boolean-object-1.0.1.tgz#10edc0900dd127697a92f6f9807c7617d68ac48e"
   integrity sha512-TqZuVwa/sppcrhUCAYkGBk7w0yxfQQnxq28fjkO53tnK9FQXmdwz2JS5+GjsWQ6RByES1K40nI+yDic5c9/aAQ==
 
-is-buffer@^1.1.5:
+is-buffer@^1.1.5, is-buffer@~1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
@@ -7278,6 +7333,15 @@ md5-file@^3.2.3:
   integrity sha512-3Tkp1piAHaworfcCgH0jKbTvj1jWWFgbvh2cXaNCgHwyTCBxxvD1Y04rmfpvdPm1P4oXMOpm6+2H7sr7v9v8Fw==
   dependencies:
     buffer-alloc "^1.1.0"
+
+md5@^2.2.1:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/md5/-/md5-2.3.0.tgz#c3da9a6aae3a30b46b7b0c349b87b110dc3bda4f"
+  integrity sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==
+  dependencies:
+    charenc "0.0.2"
+    crypt "0.0.2"
+    is-buffer "~1.1.6"
 
 merge-stream@^1.0.1:
   version "1.0.1"

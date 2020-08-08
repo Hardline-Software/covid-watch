@@ -26,6 +26,11 @@ type Organization @model(
   url: String
   managementGroupId: ID!
   userGroupId: ID!
+  users: [User!]! @connection(keyName: "byOrganization", fields: ["id"])
+  healthChecks: [HealthCheck!]! @connection(keyName: "byOrganization", fields: ["id"])
+  testResults: [TestResult!]! @connection(keyName: "byOrganization", fields: ["id"])
+  quarantines: [Quarantine!]! @connection(keyName: "byOrganization", fields: ["id"])
+  vaccinations: [Vaccination!]! @connection(keyName: "byOrganization", fields: ["id"])
 }
 
 type User @model(
@@ -40,6 +45,7 @@ type User @model(
     }
   )
   @key(fields: ["id"])
+  @key(name: "byOrganization", fields: ["organizationId"], queryField: "orgUsers")
   @auth(
     rules: [
       { allow: owner, ownerField: "id" }
@@ -55,5 +61,221 @@ type User @model(
   email: String!
   sex: Sex!
   phone: String
+  organizationId: ID!
+  organization: Organization @connection(fields: ["organizationId"])
+  healthChecks: [HealthCheck!]! @connection(keyName: "byUser", fields: ["id"])
+  testResults: [TestResult!]! @connection(keyName: "byUser", fields: ["id"])
   managementGroupId: ID!
+}
+
+enum Symptom {
+  FEVER_CHILLS
+  COUGH
+  SHORTNESS_BREATH
+  FATIGUE
+  MUSCLE_ACHES
+  HEADACHE
+  LOSS_OF_SMELL
+  SORE_THROAT
+  CONGESTION
+  NAUSEA
+  DIARRHEA
+}
+
+type HealthCheck @model(
+    queries: {
+      get: "healthCheck"
+      list: "healthChecks"
+    }
+    subscriptions: {
+      onCreate: ["newHealthCheck"]
+      onUpdate: ["healthCheckUpdated"]
+      onDelete: ["healthCheckDeleted"]
+    }
+  )
+  @key(fields: ["id"])
+  @key(name: "byUser", fields: ["userId", "createdAt"], queryField: "userHealthChecks")
+  @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgHealthChecks")
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: groups, groups: ["admins"] }
+      { allow: groups, groupsField: "managementGroupId" }
+      { allow: private, provider: iam }
+    ]
+  )
+{
+  id: ID!
+  temperature: Float!
+  temperatureF: Float @function(name: "temperature-${env}")
+  symptoms: [Symptom!]!
+  createdAt: AWSDateTime!
+  userId: ID!
+  user: User @connection(fields: ["userId"])
+  organizationId: ID!
+  organization: Organization @connection(fields: ["organizationId"])
+  managementGroupId: ID!
+}
+
+enum TestResultStatus {
+  REQUESTED
+  IN_PROGRESS
+  INCONCLUSIVE
+  POSITIVE
+  NEGATIVE
+}
+
+enum TestType {
+  VIRAL
+  ANTIBODY
+}
+
+type TestResult @model(
+    queries: {
+      get: "testResult"
+      list: "testResults"
+    }
+    subscriptions: {
+      onCreate: ["newTestResult"]
+      onUpdate: ["testResultUpdated"]
+      onDelete: ["testResultDeleted"]
+    }
+  )
+  @key(fields: ["id"])
+  @key(name: "byUser", fields: ["userId", "createdAt"], queryField: "userTestResults")
+  @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgTestResults")
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: groups, groups: ["admins"] }
+      { allow: groups, groupsField: "managementGroupId" }
+      { allow: private, provider: iam }
+    ]
+  )
+{
+  id: ID!
+  status: TestResultStatus!
+  location: String
+  type: TestType!
+  retest: Boolean!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime
+  startedAt: AWSDateTime
+  completedAt: AWSDateTime
+  userId: ID!
+  user: User @connection(fields: ["userId"])
+  organizationId: ID!
+  organization: Organization @connection(fields: ["organizationId"])
+  managementGroupId: ID!
+}
+
+enum QuarantineLocation {
+  HOME
+  HOTEL
+  HOUSING
+}
+
+type Quarantine @model(
+    queries: {
+      get: "quarantine"
+      list: "quarantines"
+    }
+    subscriptions: {
+      onCreate: ["newQuarantine"]
+      onUpdate: ["quarantineUpdated"]
+      onDelete: ["quarantineDeleted"]
+    }
+  )
+  @key(fields: ["id"])
+  @key(name: "byUser", fields: ["userId", "start"], queryField: "userQuarantines")
+  @key(name: "byOrganization", fields: ["organizationId", "start"], queryField: "orgQuarantines")
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: groups, groups: ["admins"] }
+      { allow: groups, groupsField: "managementGroupId" }
+      { allow: private, provider: iam }
+    ]
+  )
+{
+  id: ID!
+  start: AWSDateTime!
+  end: AWSDateTime!
+  location: QuarantineLocation!
+  userId: ID!
+  user: User @connection(fields: ["userId"])
+  organizationId: ID!
+  organization: Organization @connection(fields: ["organizationId"])
+  managementGroupId: ID!
+}
+
+type VaccineDose @model(
+    queries: {
+      get: "vaccineDose"
+      list: "vaccineDoses"
+    }
+    subscriptions: {
+      onCreate: ["newVaccineDose"]
+      onUpdate: ["vaccineDoseUpdated"]
+      onDelete: ["vaccineDoseDeleted"]
+    }
+  )
+  @key(fields: ["id"])
+  @key(name: "byUser", fields: ["userId", "date"], queryField: "userVaccineDoses")
+  @key(name: "byOrganization", fields: ["organizationId", "date"], queryField: "orgVaccineDoses")
+  @key(name: "byVaccination", fields: ["vaccinationId", "date"], queryField: "vaccinationDoses")
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: groups, groups: ["admins"] }
+      { allow: groups, groupsField: "managementGroupId" }
+      { allow: private, provider: iam }
+    ]
+  )
+{
+  id: ID!
+  date: AWSDate!
+  complete: Boolean!
+  vaccinationId: ID!
+  vaccination: Vaccination @connection(fields: ["vaccinationId"])
+  userId: ID!
+  user: User @connection(fields: ["userId"])
+  organizationId: ID!
+  organization: Organization @connection(fields: ["organizationId"])
+  managementGroupId: ID!
+}
+
+type Vaccination @model(
+    queries: {
+      get: "vaccination"
+      list: "vaccinations"
+    }
+    subscriptions: {
+      onCreate: ["newVaccination"]
+      onUpdate: ["vaccinationUpdated"]
+      onDelete: ["vaccinationDeleted"]
+    }
+  )
+  @key(fields: ["id"])
+  @key(name: "byUser", fields: ["userId", "createdAt"], queryField: "userVaccinations")
+  @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgVaccination")
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: groups, groups: ["admins"] }
+      { allow: groups, groupsField: "managementGroupId" }
+      { allow: private, provider: iam }
+    ]
+  )
+{
+  id: ID!
+  vaccine: String!
+  userId: ID!
+  user: User @connection(fields: ["userId"])
+  organizationId: ID!
+  organization: Organization @connection(fields: ["organizationId"])
+  managementGroupId: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime
+  doses: [VaccineDose!]! @connection(keyName: "byVaccination", fields: ["id"])
 }
