@@ -45,12 +45,17 @@ const SignUpUser = () => {
           style={styles.input1}
           onChangeText={(newVal: string) => setEmail(newVal)}
         ></TextInput>
-        <TextInput placeholder="Password" style={styles.input1} secureTextEntry={true}></TextInput>
+        <TextInput
+          placeholder="Password"
+          style={styles.input1}
+          secureTextEntry={true}
+          onChangeText={(newVal: string) => setPassword(newVal)}
+        ></TextInput>
         <TextInput
           placeholder="Confirm Password"
           style={styles.input1}
           secureTextEntry={true}
-          onChangeText={(newVal: string) => setPassword(newVal)}
+          onChangeText={(newVal: string) => setConfirmPswd(newVal)}
         ></TextInput>
       </View>
       <TouchableOpacity

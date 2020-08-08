@@ -15,11 +15,11 @@ const SignUpUser = () => {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPswd, setConfirmPswd] = useState('')
 
   return (
-      
     <KeyboardAwareScrollView style={{ flex: 1 }}>
-    <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.vert}>
           <TextInput
             placeholder="Organization"
@@ -75,20 +75,32 @@ const SignUpUser = () => {
             style={styles.input1}
             onChangeText={(newVal: string) => setEmail(newVal)}
           ></TextInput>
-          <TextInput placeholder="Password" style={styles.input1} secureTextEntry={true}></TextInput>
           <TextInput
-            placeholder="Confirm Password"
+            placeholder="Password"
             style={styles.input1}
             secureTextEntry={true}
             onChangeText={(newVal: string) => setPassword(newVal)}
           ></TextInput>
+          <TextInput
+            placeholder="Confirm Password"
+            style={styles.input1}
+            secureTextEntry={true}
+            onChangeText={(newVal: string) => setConfirmPswd(newVal)}
+          ></TextInput>
         </View>
 
-        <TouchableOpacity style={styles.signup}>
+        <TouchableOpacity
+          style={styles.signup}
+          onPress={() => {
+            if (password !== confirmPswd) {
+              // do something
+              return
+            }
+          }}
+        >
           <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Sign Up</Text>
         </TouchableOpacity>
-    </SafeAreaView>
-    
+      </SafeAreaView>
     </KeyboardAwareScrollView>
   )
 }

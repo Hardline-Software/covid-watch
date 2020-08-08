@@ -9,7 +9,7 @@ const UserDashboardPage = () => {
     <SafeAreaView style={styles.container}>
       <Text>Dashboard</Text>
       <Widget title="Your Daily Checkup">
-        <Text>ok</Text>
+        <Text>000.0&#186;F</Text>
       </Widget>
       <Widget title="Test Results"></Widget>
       <Widget title="Quarantine"></Widget>
