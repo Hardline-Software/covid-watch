@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TextInput } from 'react-native-gesture-handler'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const SignUpUser = () => {
   const [organization, setOrganization] = useState('')
@@ -16,79 +17,79 @@ const SignUpUser = () => {
   const [password, setPassword] = useState('')
 
   return (
+      
+    <KeyboardAwareScrollView style={{ flex: 1 }}>
     <SafeAreaView style={styles.container}>
-      <View style={styles.vert}>
-        <TextInput
-          placeholder="Organization"
-          style={styles.input1}
-          onChangeText={(newVal: string) => setOrganization(newVal)}
-        ></TextInput>
-      </View>
+        <View style={styles.vert}>
+          <TextInput
+            placeholder="Organization"
+            style={styles.input1}
+            onChangeText={(newVal: string) => setOrganization(newVal)}
+          ></TextInput>
+        </View>
 
-      <View style={styles.horz}>
-        <TextInput
-          placeholder="Country"
-          style={styles.input2}
-          onChangeText={(newVal: string) => setCountry(newVal)}
-        ></TextInput>
-        <TextInput
-          placeholder="State"
-          style={styles.input2}
-          onChangeText={(newVal: string) => setState(newVal)}
-        ></TextInput>
-      </View>
+        <View style={styles.horz}>
+          <TextInput
+            placeholder="Country"
+            style={styles.input2}
+            onChangeText={(newVal: string) => setCountry(newVal)}
+          ></TextInput>
+          <TextInput
+            placeholder="State"
+            style={styles.input2}
+            onChangeText={(newVal: string) => setState(newVal)}
+          ></TextInput>
+        </View>
 
-      <View style={styles.horz}>
-        <TextInput
-          placeholder="City"
-          style={styles.input2}
-          onChangeText={(newVal: string) => setCity(newVal)}
-        ></TextInput>
-        <TextInput
-          placeholder="Zip"
-          style={styles.input2}
-          onChangeText={(newVal: string) => setZip(newVal)}
-        ></TextInput>
-      </View>
+        <View style={styles.horz}>
+          <TextInput
+            placeholder="City"
+            style={styles.input2}
+            onChangeText={(newVal: string) => setCity(newVal)}
+          ></TextInput>
+          <TextInput
+            placeholder="Zip"
+            style={styles.input2}
+            onChangeText={(newVal: string) => setZip(newVal)}
+          ></TextInput>
+        </View>
 
-      <View style={styles.vert}>
-        <TextInput
-          placeholder="Address"
-          style={styles.input1}
-          onChangeText={(newVal: string) => setAddress(newVal)}
-        ></TextInput>
-        <TextInput
-          placeholder="Website"
-          style={styles.input1}
-          onChangeText={(newVal: string) => setWebsite(newVal)}
-        ></TextInput>
-        <TextInput
-          placeholder="Phone Number"
-          style={styles.input1}
-          onChangeText={(newVal: string) => setPhone(newVal)}
-        ></TextInput>
-        <TextInput
-          placeholder="Email"
-          style={styles.input1}
-          onChangeText={(newVal: string) => setEmail(newVal)}
-        ></TextInput>
-        <TextInput
-          placeholder="Password"
-          style={styles.input1}
-          secureTextEntry={true}
-        ></TextInput>
-        <TextInput
-          placeholder="Confirm Password"
-          style={styles.input1}
-          secureTextEntry={true}
-          onChangeText={(newVal: string) => setPassword(newVal)}
-        ></TextInput>
-      </View>
+        <View style={styles.vert}>
+          <TextInput
+            placeholder="Address"
+            style={styles.input1}
+            onChangeText={(newVal: string) => setAddress(newVal)}
+          ></TextInput>
+          <TextInput
+            placeholder="Website"
+            style={styles.input1}
+            onChangeText={(newVal: string) => setWebsite(newVal)}
+          ></TextInput>
+          <TextInput
+            placeholder="Phone Number"
+            style={styles.input1}
+            onChangeText={(newVal: string) => setPhone(newVal)}
+          ></TextInput>
+          <TextInput
+            placeholder="Email"
+            style={styles.input1}
+            onChangeText={(newVal: string) => setEmail(newVal)}
+          ></TextInput>
+          <TextInput placeholder="Password" style={styles.input1} secureTextEntry={true}></TextInput>
+          <TextInput
+            placeholder="Confirm Password"
+            style={styles.input1}
+            secureTextEntry={true}
+            onChangeText={(newVal: string) => setPassword(newVal)}
+          ></TextInput>
+        </View>
 
-      <TouchableOpacity style={styles.signup}>
-        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Sign Up</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.signup}>
+          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Sign Up</Text>
+        </TouchableOpacity>
     </SafeAreaView>
+    
+    </KeyboardAwareScrollView>
   )
 }
 
