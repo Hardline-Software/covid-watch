@@ -121,7 +121,7 @@ const LogInPage = () => {
       }
     }
     setLoading(false)
-  }, [newPassword, name, user])
+  }, [newPassword, user])
 
   const confirmSignIn = useCallback(async () => {
     setLoading(true)
