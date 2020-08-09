@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { StyleSheet, Image, Text, View } from 'react-native'
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Widget from '../components/Widget'
 import DailyCheckupWidget from '../components/DailyCheckupWidget'
+import TestResultsWidget from '../components/TestResultsWidget'
 import Navigator from '../components/Pulldown'
 import { useAuthUser } from '../hooks/useAuthUser'
 import { useUserDashboardQuery } from '../generated/graphql'
@@ -21,9 +20,7 @@ const UserDashboardPage = () => {
     <SafeAreaView style={styles.container}>
       <Navigator />
       <DailyCheckupWidget />
-      <Widget title="Test Results"></Widget>
-      <Widget title="Quarantine"></Widget>
-      <Widget title="Vaccinations"></Widget>
+      <TestResultsWidget />
     </SafeAreaView>
   )
 }
