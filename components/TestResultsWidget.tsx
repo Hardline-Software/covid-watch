@@ -38,7 +38,7 @@ const TestResultsWidget = () => {
       id: 2,
       name: 'COVID-19 B',
       date: '12/03/2200',
-      result: TestStatus.POSITIVE
+      result: TestStatus.REQUESTED
     }
   ] // TODO hook into backend
 

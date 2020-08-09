@@ -22,8 +22,33 @@ type TestResultProps = {
 
 const TestResult: FC<TestResultProps> = ({ data }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Result</Text>
+    <View style={{ ...styles.container, backgroundColor: getBackgroundColor(data.result) }}>
+      <Text
+        style={
+          data.result == TestStatus.REQUESTED
+            ? { color: 'black', fontWeight: 'bold' }
+            : { color: 'white', fontWeight: 'bold' }
+        }
+      >
+        {data.name}
+      </Text>
+      <Text
+        style={
+          data.result == TestStatus.REQUESTED
+            ? { color: 'black', fontWeight: 'bold' }
+            : { color: 'white', fontWeight: 'bold' }
+        }
+      >
+        {data.result == TestStatus.REQUESTED
+          ? 'Requested'
+          : data.result == TestStatus.POSITIVE
+          ? 'Positive'
+          : data.result == TestStatus.NEGATIVE
+          ? 'Negative'
+          : data.result == TestStatus.INPROGRESS
+          ? 'In Progress'
+          : 'Unknown'}
+      </Text>
     </View>
   )
 }
@@ -31,16 +56,27 @@ const TestResult: FC<TestResultProps> = ({ data }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    padding: 10
-  },
-  text: {}
+    padding: 10,
+    backgroundColor: '#E8E8E8',
+    justifyContent: 'space-between'
+  }
 })
 
-const getBackgroundColor = (status: TestStatus) => {
-  if (status == TestStatus.POSITIVE) return '#d94d48'
-  if (status == TestStatus.NEGATIVE) return '#48d97d'
-  if (status == TestStatus.INPROGRESS) return '#e6cb35'
-  return '#E8E8E8'
+const getBackgroundColor = (result: TestStatus) => {
+  switch (result) {
+    case TestStatus.POSITIVE:
+      return 'darkred'
+      break
+    case TestStatus.INPROGRESS:
+      return '#dea300'
+      break
+    case TestStatus.NEGATIVE:
+      return '#26bf00'
+      break
+    default:
+      return '#E8E8E8'
+      break
+  }
 }
 
 export default TestResult
