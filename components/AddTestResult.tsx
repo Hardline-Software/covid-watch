@@ -6,10 +6,8 @@ type AddTestResultsPopupProps = {
   toggleFunction(): void
 }
 
-
 const AddTestResult: FC<AddTestResultsPopupProps> = (props) => {
   return (
-    //TODO  make this functional
     <TouchableOpacity style={styles.container} onPress={props.toggleFunction}>
       <MaterialIcons name="add-circle" size={24} color="white" />
     </TouchableOpacity>

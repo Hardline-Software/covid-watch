@@ -20,11 +20,23 @@ const TestResultPopup: FC<TestResultPopupProps> = (props) => {
     console.log(testResults)
   }, [testResults])
 
-  const addTestResultHandler = (testCenterName: string, testName: string, testDate: string, resultDate: string, result: string) => {
+  const addTestResultHandler = (
+    testCenterName: string,
+    testName: string,
+    testDate: string,
+    resultDate: string,
+    result: string
+  ) => {
     setTestResults([...testResults, generateTestResult(testCenterName, testName, testDate, resultDate, result)])
   }
 
-  const generateTestResult = (centerName: string, testName: string, testDate: string, resultDate: string, result: string) => {
+  const generateTestResult = (
+    centerName: string,
+    testName: string,
+    testDate: string,
+    resultDate: string,
+    result: string
+  ) => {
     return {
       centerName: centerName,
       testName: testName,
@@ -68,14 +80,12 @@ const TestResultPopup: FC<TestResultPopupProps> = (props) => {
       ></TextInput>
       <TouchableOpacity
         style={styles.button}
-        onPress={() =>
-          addTestResultHandler(testCenterName, testName, testDate, resultDate, result)
-        }
+        onPress={() => addTestResultHandler(testCenterName, testName, testDate, resultDate, result)}
       >
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Add Test Result</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={props.closeFunction}>
-        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Done</Text>
+      <TouchableOpacity style={{ ...styles.button, backgroundColor: '#c70202' }} onPress={props.closeFunction}>
+        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Cancel</Text>
       </TouchableOpacity>
     </View>
   )
@@ -92,11 +102,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   textInput: {
-      padding: 10,
-      backgroundColor: '#F2F2F2',
-      width: '60%',
-      margin: 5,
-      borderRadius: 7.5
+    padding: 10,
+    backgroundColor: '#F2F2F2',
+    width: '60%',
+    margin: 5,
+    borderRadius: 7.5
   },
   button: {
     width: 170,
@@ -108,10 +118,10 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   member: {
-      flexDirection: 'row',
-      backgroundColor: '#F2F2F2',
-      borderRadius: 7.5,
-      width: '60%'
+    flexDirection: 'row',
+    backgroundColor: '#F2F2F2',
+    borderRadius: 7.5,
+    width: '60%'
   },
   memberInput: {
     flex: 5,
@@ -122,12 +132,12 @@ const styles = StyleSheet.create({
     borderRadius: 7.5
   },
   add: {
-      flex: 1,
+    flex: 1,
     padding: 10,
     backgroundColor: 'deepskyblue',
     margin: 5,
     borderRadius: 7.5,
-    alignContent: 'flex-end',
+    alignContent: 'flex-end'
   }
 })
 

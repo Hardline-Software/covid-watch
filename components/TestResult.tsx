@@ -1,53 +1,43 @@
 import React, { FC } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-
-// TODO remove duplicate type declarations
-enum TestStatus {
-  REQUESTED,
-  INPROGRESS,
-  POSITIVE,
-  NEGATIVE
-}
-
-type TestResultData = {
-  id: number
-  name: string
-  date: string
-  result: TestStatus
-}
+import { TestResultFragment, TestResultStatus } from '../generated/graphql'
 
 type TestResultProps = {
-  data: TestResultData
+  data: TestResultFragment
 }
 
 const TestResult: FC<TestResultProps> = ({ data }) => {
   return (
-    <View style={{ ...styles.container, backgroundColor: getBackgroundColor(data.result) }}>
+    <View style={{ ...styles.container, backgroundColor: getBackgroundColor(data.status) }}>
       <Text
         style={
-          data.result == TestStatus.REQUESTED
+          data.status == TestResultStatus.REQUESTED
             ? { color: 'black', fontWeight: 'bold' }
             : { color: 'white', fontWeight: 'bold' }
         }
       >
-        {data.name}
+        COVID-19
+        {`\n`}
+        {data.location}
       </Text>
       <Text
         style={
-          data.result == TestStatus.REQUESTED
+          data.status == TestResultStatus.REQUESTED
             ? { color: 'black', fontWeight: 'bold' }
             : { color: 'white', fontWeight: 'bold' }
         }
       >
-        {data.result == TestStatus.REQUESTED
+        {data.status == TestResultStatus.REQUESTED
           ? 'Requested'
-          : data.result == TestStatus.POSITIVE
+          : data.status == TestResultStatus.POSITIVE
           ? 'Positive'
-          : data.result == TestStatus.NEGATIVE
+          : data.status == TestResultStatus.NEGATIVE
           ? 'Negative'
-          : data.result == TestStatus.INPROGRESS
+          : data.status == TestResultStatus.IN_PROGRESS
           ? 'In Progress'
           : 'Unknown'}
+        {`\n`}
+        {data.updatedAt}
       </Text>
     </View>
   )

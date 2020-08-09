@@ -69,7 +69,7 @@ const LogInPage = () => {
         // Redirect to user dasboard page
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Organization Dashboard' }]
+          routes: [{ name: 'User Dashboard' }]
         })
       }
     } catch (err) {
@@ -112,7 +112,7 @@ const LogInPage = () => {
       // Redirect to dashboard page
       navigation.reset({
         index: 0,
-        routes: [{ name: 'UserDashboard' }]
+        routes: [{ name: 'User Dashboard' }]
       })
     } catch (err) {
       console.log(err)
@@ -130,7 +130,7 @@ const LogInPage = () => {
         // Redirect to dashboard page
         navigation.reset({
           index: 0,
-          routes: [{ name: 'UserDashboard' }]
+          routes: [{ name: 'User Dashboard' }]
         })
       })
     } catch (err) {

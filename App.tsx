@@ -21,7 +21,7 @@ const Stack = createStackNavigator()
 
 const App = () => (
   <ApolloProvider client={client}>
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ flex: 1 }}>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Log In" options={{ headerShown: false }} component={LogInPage} />

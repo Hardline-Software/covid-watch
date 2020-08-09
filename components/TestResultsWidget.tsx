@@ -5,20 +5,8 @@ import TestResult from './TestResult'
 import AddTestResult from './AddTestResult'
 import Modal from 'react-native-modal'
 import TestResultPopup from '../components/TestResultPopup'
-
-enum TestStatus {
-  REQUESTED,
-  INPROGRESS,
-  POSITIVE,
-  NEGATIVE
-}
-
-type TestResultData = {
-  id: number
-  name: string
-  date: string
-  result: TestStatus
-}
+import { useUserTestResultsQuery, TestResultFragment } from '../generated/graphql'
+import { useAuthUser } from '../hooks/useAuthUser'
 
 const TestResultsWidget = () => {
   const [isModalVisible, setModalVisible] = useState(false)
@@ -27,20 +15,14 @@ const TestResultsWidget = () => {
     setModalVisible(!isModalVisible)
   }
 
-  const testResults: TestResultData[] = [
-    {
-      id: 1,
-      name: 'COVID-19 A',
-      date: '09/21/1970',
-      result: TestStatus.POSITIVE
+  const { user } = useAuthUser()
+
+  const { data, loading, error } = useUserTestResultsQuery({
+    variables: {
+      userId: user?.id!
     },
-    {
-      id: 2,
-      name: 'COVID-19 B',
-      date: '12/03/2200',
-      result: TestStatus.REQUESTED
-    }
-  ] // TODO hook into backend
+    skip: !user
+  })
 
   return (
     <Widget
@@ -51,12 +33,9 @@ const TestResultsWidget = () => {
           <Modal style={styles.testResultPopup} isVisible={isModalVisible} coverScreen={true}>
             <TestResultPopup closeFunction={toggleModal} />
           </Modal>
-          <FlatList
-            data={testResults}
-            renderItem={({ item }) => <TestResult data={item} />}
-            keyExtractor={(item: object, index: number) => `${index}`}
-          />
-          <AddTestResult toggleFunction={toggleModal}/>
+          {data?.userTestResults?.items &&
+            (data?.userTestResults?.items).map((item, index) => <TestResult data={item!} key={index} />)}
+          <AddTestResult toggleFunction={toggleModal} />
         </>
       }
     />

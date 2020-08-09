@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { StyleSheet, Image, Text, View } from 'react-native'
+import { StyleSheet, ScrollView, Image, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import DailyCheckupWidget from '../components/DailyCheckupWidget'
 import TestResultsWidget from '../components/TestResultsWidget'
-import Navigator from '../components/Pulldown'
+import Pulldown from '../components/Pulldown'
 import { useAuthUser } from '../hooks/useAuthUser'
 import { useUserDashboardQuery } from '../generated/graphql'
+import VaccinationsWidget from '../components/VaccinationsWidget'
 
 const UserDashboardPage = () => {
   const { user } = useAuthUser()
@@ -15,13 +16,15 @@ const UserDashboardPage = () => {
     },
     skip: !user
   })
-  console.log(data?.user)
   return (
-    <SafeAreaView style={styles.container}>
-      <Navigator />
-      <DailyCheckupWidget />
-      <TestResultsWidget />
-    </SafeAreaView>
+    <ScrollView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <Pulldown name={data?.user?.givenName} />
+        <DailyCheckupWidget />
+        <TestResultsWidget />
+        <VaccinationsWidget />
+      </SafeAreaView>
+    </ScrollView>
   )
 }
 
