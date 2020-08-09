@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 
-const AddTestResult = () => {
+type AddTestResultsPopupProps = {
+  toggleFunction(): void
+}
+
+
+const AddTestResult: FC<AddTestResultsPopupProps> = (props) => {
   return (
     //TODO  make this functional
-    <TouchableOpacity style={styles.container} onPress={() => console.log('Ocatvian popup magic')}>
+    <TouchableOpacity style={styles.container} onPress={props.toggleFunction}>
       <MaterialIcons name="add-circle" size={24} color="white" />
     </TouchableOpacity>
   )

@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Widget from './Widget'
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 import TestResult from './TestResult'
 import AddTestResult from './AddTestResult'
+import Modal from 'react-native-modal'
+import TestResultPopup from '../components/TestResultPopup'
 
 enum TestStatus {
   REQUESTED,
@@ -19,6 +21,12 @@ type TestResultData = {
 }
 
 const TestResultsWidget = () => {
+  const [isModalVisible, setModalVisible] = useState(false)
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible)
+  }
+
   const testResults: TestResultData[] = [
     {
       id: 1,
@@ -40,12 +48,15 @@ const TestResultsWidget = () => {
       expandable={false}
       base={
         <>
+          <Modal style={styles.testResultPopup} isVisible={isModalVisible} coverScreen={true}>
+            <TestResultPopup closeFunction={toggleModal} />
+          </Modal>
           <FlatList
             data={testResults}
             renderItem={({ item }) => <TestResult data={item} />}
             keyExtractor={(item: object, index: number) => `${index}`}
           />
-          <AddTestResult />
+          <AddTestResult toggleFunction={toggleModal}/>
         </>
       }
     />
@@ -53,7 +64,8 @@ const TestResultsWidget = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {}
+  container: {},
+  testResultPopup: {}
 })
 
 export default TestResultsWidget

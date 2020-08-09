@@ -31,7 +31,6 @@ const OrgDashboardPage = () => {
 
       <QuarantineWidget />
 
-      
       <Widget
         title="Manage Members"
         expandable={false}

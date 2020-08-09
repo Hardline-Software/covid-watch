@@ -11,7 +11,7 @@ const QuarantinePopup: FC<QuarantinePopupProps> = (props) => {
   const [quarantines, setQuarantines] = useState<object[]>([])
 
   const [quarantineID, setQuarantineID] = useState('')
-  const [quarantineName, setQuarantineName] = useState('')
+  const [quarantineLocation, setQuarantineLocation] = useState('')
   const [currentMember, setCurrentMember] = useState('')
   const [quarantineMembers, setQuarantineMembers] = useState<string[]>([])
   const [quarantineStartDate, setQuarantineStartDate] = useState('')
@@ -45,9 +45,9 @@ const QuarantinePopup: FC<QuarantinePopupProps> = (props) => {
       ></TextInput>
       <TextInput
         style={styles.textInput}
-        placeholder="Quarantine Name"
-        value={quarantineName}
-        onChangeText={(newVal: string) => setQuarantineName(newVal)}
+        placeholder="Quarantine Location"
+        value={quarantineLocation}
+        onChangeText={(newVal: string) => setQuarantineLocation(newVal)}
       ></TextInput>
       <View style={styles.member}>
         <TextInput
