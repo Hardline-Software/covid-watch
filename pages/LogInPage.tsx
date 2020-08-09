@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
   section: {
     alignItems: 'center',
     padding: 15,
-    marginBottom: 128
+    marginBottom: 0
   },
   split: {
     borderBottomWidth: 1,
