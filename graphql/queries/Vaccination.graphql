@@ -1,0 +1,5 @@
+query Vaccination($id: ID!) {
+  vaccination(id: $id) {
+    ...Vaccination
+  }
+}

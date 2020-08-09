@@ -101,7 +101,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-covidwatch-dev-213909-deployment",
-					"S3Key": "amplify-builds/covidwatchPostAuthentication-6d6d756e54756674564b-build.zip"
+					"S3Key": "amplify-builds/covidwatchPostAuthentication-56386b78763253697350-build.zip"
 				}
 			}
 		},

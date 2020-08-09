@@ -1,0 +1,5 @@
+query TestResult($id: ID!) {
+  testResult(id: $id) {
+    ...TestResult
+  }
+}

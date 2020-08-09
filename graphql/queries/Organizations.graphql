@@ -1,0 +1,8 @@
+query Organizations($nextToken: String!) {
+  organizations(limit: 10, nextToken: $nextToken) {
+    items {
+      ...Organization
+    }
+    nextToken
+  }
+}

@@ -1,0 +1,30 @@
+query OrgDashboard($organizationId: ID!) {
+  organization(id: $organizationId) {
+    ...Organization
+    users(limit: 3) {
+      items {
+        ...User
+      }
+    }
+    healthChecks(limit: 1) {
+      items {
+        ...HealthCheck
+      }
+    }
+    testResults(limit: 3) {
+      items {
+        ...TestResult
+      }
+    }
+    quarantines(limit: 1) {
+      items {
+        ...Quarantine
+      }
+    }
+    vaccinations(limit: 3) {
+      items {
+        ...Vaccination
+      }
+    }
+  }
+}

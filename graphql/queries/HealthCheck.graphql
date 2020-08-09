@@ -1,0 +1,5 @@
+query HealthCheck($id: ID!) {
+  healthCheck(id: $id) {
+    ...HealthCheck
+  }
+}

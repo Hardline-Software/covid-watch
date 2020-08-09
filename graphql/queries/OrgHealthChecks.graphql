@@ -1,0 +1,8 @@
+query OrgHealthChecks($organizationId: ID!, $nextToken: String) {
+  orgHealthChecks(organizationId: $organizationId, limit: 10, nextToken: $nextToken) {
+    items {
+      ...HealthCheck
+    }
+    nextToken
+  }
+}
