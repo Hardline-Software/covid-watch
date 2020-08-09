@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import { StyleSheet, Image, Text, View } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import { StackNavigationProp } from '@react-navigation/stack'
 
-const LogInPage = () => {
+type PageProps = {
+  //navigation: StackNavigationProp<RootStack>
+}
+
+const LogInPage: FC<PageProps> = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -24,7 +29,7 @@ const LogInPage = () => {
             <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Sign In</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.section}>
+        <TouchableOpacity style={styles.section} onPress={() => {}}>
           <Text>Sign Up</Text>
         </TouchableOpacity>
       </View>
