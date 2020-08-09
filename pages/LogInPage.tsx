@@ -60,7 +60,7 @@ const LogInPage = () => {
         // Redirect to home page
         navigation.reset({
           index: 0,
-          routes: [{ name: 'UserDashboard' }]
+          routes: [{ name: 'OrgDashboard' }]
         })
       }
     } catch (err) {
@@ -94,7 +94,7 @@ const LogInPage = () => {
       <Image source={require('../assets/logo.png')} style={styles.icon} />
       <View>
         <View style={(styles.section, styles.split)}>
-          <TextInput placeholder="Email" style={styles.textfield} onChangeText={(newVal: string) => setEmail(newVal)}>
+          <TextInput placeholder="Email" autoCorrect={false} autoCapitalize="none" style={styles.textfield} onChangeText={(newVal: string) => setEmail(newVal)}>
             {email}
           </TextInput>
           <TextInput
