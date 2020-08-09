@@ -1,21 +1,24 @@
 import React, { useState } from 'react'
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TextInput } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
 
 const SignUpPage = () => {
   const [date, setDate] = useState(new Date())
+  const navigation = useNavigation()
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Image style={styles.icon} source={require('../assets/logo.png')} />
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('User Signup')}>
         <Text style={{ color: 'black', fontSize: 30 }}>User</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>
-        <Text style={{ color: 'black', fontSize: 30 }}>Organization</Text>
+        <Text style={{ color: 'black', fontSize: 30 }} onPress={() => navigation.navigate('Organization Signup')}>
+          Organization
+        </Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   )
 }
 

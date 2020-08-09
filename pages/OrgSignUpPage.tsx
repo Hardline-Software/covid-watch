@@ -12,7 +12,6 @@ const OrgSignUpPage = () => {
   const [zip, setZip] = useState('')
   const [address, setAddress] = useState('')
   const [website, setWebsite] = useState('')
-  const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPswd, setConfirmPswd] = useState('')
@@ -64,11 +63,6 @@ const OrgSignUpPage = () => {
             placeholder="Website"
             style={styles.input1}
             onChangeText={(newVal: string) => setWebsite(newVal)}
-          ></TextInput>
-          <TextInput
-            placeholder="Phone Number"
-            style={styles.input1}
-            onChangeText={(newVal: string) => setPhone(newVal)}
           ></TextInput>
           <TextInput
             placeholder="Email"

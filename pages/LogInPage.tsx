@@ -355,7 +355,7 @@ const LogInPage = () => {
       <View>
         <View style={(styles.section, styles.split)}>
           <TextInput
-            autoFocus
+            autoCorrect={false}
             autoCapitalize="none"
             placeholder="Email"
             style={styles.textfield}
@@ -365,6 +365,7 @@ const LogInPage = () => {
           {emailError && <Text style={styles.errorText}>{emailError}</Text>}
           <TextInput
             placeholder="Password"
+            autoCapitalize="none"
             style={styles.textfield}
             secureTextEntry={true}
             value={password}
@@ -379,7 +380,13 @@ const LogInPage = () => {
             </TouchableOpacity>
           )}
         </View>
-        <TouchableOpacity style={styles.section} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.section}
+          onPress={() => {
+            // Redirect to dashboard page
+            navigation.navigate('Sign Up')
+          }}
+        >
           <Text>Sign Up</Text>
         </TouchableOpacity>
       </View>
