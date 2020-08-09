@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "covidwatch",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcovidwatch",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
