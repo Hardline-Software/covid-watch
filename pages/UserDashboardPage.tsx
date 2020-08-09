@@ -6,10 +6,17 @@ import Widget from '../components/Widget'
 import DailyCheckupWidget from '../components/DailyCheckupWidget'
 import Navigator from '../components/Navigator'
 import { useAuthUser } from '../hooks/useAuthUser'
+import { useUserDashboardQuery } from '../generated/graphql'
 
 const UserDashboardPage = () => {
   const { user } = useAuthUser()
-  console.log(user)
+  const { data, loading } = useUserDashboardQuery({
+    variables: {
+      userId: user!.id
+    },
+    skip: !user
+  })
+  console.log(data?.user)
   return (
     <SafeAreaView style={styles.container}>
       <Navigator />

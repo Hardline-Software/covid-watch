@@ -1,6 +1,6 @@
 mutation CreateOrganization(
   $name: String!
-  $description: String!
+  $description: String
   $photoUrl: String
   $url: String
   $address: String!

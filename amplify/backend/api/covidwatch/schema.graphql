@@ -267,7 +267,7 @@ type Vaccination @model(
   )
   @key(fields: ["id"])
   @key(name: "byUser", fields: ["userId", "createdAt"], queryField: "userVaccinations")
-  @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgVaccination")
+  @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgVaccinations")
   @auth(
     rules: [
       { allow: owner, ownerField: "id", operations: [create, update, read] }

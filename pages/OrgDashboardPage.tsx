@@ -4,8 +4,18 @@ import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Widget from '../components/Widget'
 import QuarantineWidget from '../components/QuarantinesWidget'
+import { useOrgDashboardQuery } from '../generated/graphql'
+import { useAuthUser } from '../hooks/useAuthUser'
 
 const OrgDashboardPage = () => {
+  const { user } = useAuthUser()
+  const { data, loading } = useOrgDashboardQuery({
+    variables: {
+      organizationId: user!.organizationId
+    },
+    skip: !user
+  })
+  console.log(data?.organization)
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>

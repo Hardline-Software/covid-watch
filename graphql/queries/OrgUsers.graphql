@@ -1,0 +1,8 @@
+query OrgUsers($organizationId: ID!, $nextToken: String!) {
+  orgUsers(organizationId: $organizationId, limit: 10, nextToken: $nextToken) {
+    items {
+      ...User
+    }
+    nextToken
+  }
+}
