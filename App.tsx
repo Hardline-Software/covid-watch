@@ -1,7 +1,6 @@
-import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import 'react-native-gesture-handler'
+import { StatusBar } from 'expo-status-bar'
+import { ApolloProvider } from '@apollo/client'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -11,11 +10,17 @@ import UserSignUpPage from './pages/UserSignUpPage'
 import OrgSignUpPage from './pages/OrgSignUpPage'
 import OrgDashboardPage from './pages/OrgDashboardPage'
 import PreSignUpPage from './pages/PreSignUpPage'
+import client from './client'
+import Amplify from 'aws-amplify'
+import configuration from './aws-exports'
+import 'react-native-gesture-handler'
+
+Amplify.configure(configuration)
 
 const Stack = createStackNavigator()
 
-export default function App() {
-  return (
+const App = () => (
+  <ApolloProvider client={client}>
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator>
@@ -29,5 +34,7 @@ export default function App() {
       </NavigationContainer>
       <StatusBar style="auto" />
     </SafeAreaProvider>
-  )
-}
+  </ApolloProvider>
+)
+
+export default App
