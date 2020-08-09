@@ -1,0 +1,33 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-covidwatch-dev-213909-authRole",
+            "UnauthRoleArn": "arn:aws:iam::384495034542:role/amplify-covidwatch-dev-213909-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::384495034542:role/amplify-covidwatch-dev-213909-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-covidwatch-dev-213909-deployment",
+            "UnauthRoleName": "amplify-covidwatch-dev-213909-unauthRole",
+            "StackName": "amplify-covidwatch-dev-213909",
+            "StackId": "arn:aws:cloudformation:us-east-1:384495034542:stack/amplify-covidwatch-dev-213909/f5eff380-d917-11ea-83e0-0a1540e225b5",
+            "AmplifyAppId": "d2lhk9lrsiy70m"
+        },
+        "categories": {
+            "function": {
+                "covidwatchCustomMessage": {
+                    "REDIRECTURL": "https://covidwatch.vercel.app/",
+                    "EMAILSUBJECT": "Please confirm your CovidWatch email address",
+                    "EMAILMESSAGE": "Click the link below to confirm your CovidWatch email address."
+                },
+                "covidwatchPostConfirmation": {
+                    "GROUP": "users"
+                },
+                "covidwatchPostAuthentication": {}
+            },
+            "auth": {
+                "covidwatch": {
+                    "hostedUIProviderCreds": "[]"
+                }
+            }
+        }
+    }
+}
