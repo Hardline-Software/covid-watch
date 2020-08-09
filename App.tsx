@@ -24,12 +24,12 @@ const App = () => (
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="LogIn" component={LogInPage} />
-          <Stack.Screen name="PreSignUp" component={PreSignUpPage} />
-          <Stack.Screen name="UserSignUp" component={UserSignUpPage} />
-          <Stack.Screen name="OrgSignUp" component={OrgSignUpPage} />
+          <Stack.Screen name="LogIn" options={{ headerShown: false }} component={LogInPage} />
+          <Stack.Screen name="PreSignUp" options={{ headerShown: false }} component={PreSignUpPage} />
+          <Stack.Screen name="UserSignUp" options={{ headerShown: false }} component={UserSignUpPage} />
+          <Stack.Screen name="OrgSignUp" options={{ headerShown: false }} component={OrgSignUpPage} />
           <Stack.Screen name="UserDashboard" options={{ headerShown: false }} component={UserDashboardPage} />
-          <Stack.Screen name="OrgDashboard" component={OrgDashboardPage} />
+          <Stack.Screen name="OrgDashboard" options={{ headerShown: false }} component={OrgDashboardPage} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
