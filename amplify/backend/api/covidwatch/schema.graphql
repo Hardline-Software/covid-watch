@@ -38,6 +38,11 @@ type Organization @model(
   vaccinations: [Vaccination!]! @connection(keyName: "byOrganization", fields: ["id"])
 }
 
+enum UserRole {
+  MANAGER
+  USER
+}
+
 type User @model(
     queries: {
       get: "user"
@@ -61,6 +66,7 @@ type User @model(
   ) 
 {
   id: ID!
+  role: UserRole!
   givenName: String!
   familyName: String!
   photoUrl: String
