@@ -15,7 +15,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <OrgDashboardPage />
+        <UserDashboardPage />
       </NavigationContainer>
       <StatusBar style="auto" />
     </SafeAreaProvider>

@@ -3,14 +3,14 @@ import { StyleSheet, Image, Text, View } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Widget from '../components/Widget'
+import DailyCheckupWidget from '../components/DailyCheckupWidget'
+import Navigator from '../components/Navigator'
 
 const UserDashboardPage = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Dashboard</Text>
-      <Widget title="Your Daily Checkup">
-        <Text>000.0&#186;F</Text>
-      </Widget>
+      <Navigator />
+      <DailyCheckupWidget />
       <Widget title="Test Results"></Widget>
       <Widget title="Quarantine"></Widget>
       <Widget title="Vaccinations"></Widget>
