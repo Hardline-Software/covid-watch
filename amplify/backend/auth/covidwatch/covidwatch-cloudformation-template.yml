@@ -31,6 +31,16 @@ Parameters:
   
   
   
+  functioncovidwatchPostAuthenticationArn: 
+    Type: String
+    Default: functioncovidwatchPostAuthenticationArn
+  
+  functioncovidwatchPostAuthenticationName: 
+    Type: String
+    Default: functioncovidwatchPostAuthenticationName
+  
+  
+  
 
     
   identityPoolName:
@@ -122,22 +132,7 @@ Parameters:
                 
   hostedUI:
     Type: String
-            
-  hostedUIDomainName:
-    Type: String
-                      
-  authProvidersUserPool:
-    Type: CommaDelimitedList
-      
-  hostedUIProviderMeta:
-    Type: String
-              
-  hostedUIProviderCreds:
-    Type: String
-              
-  oAuthMetadata:
-    Type: String
-                      
+                    
   userPoolGroupList:
     Type: CommaDelimitedList
       
@@ -155,7 +150,22 @@ Parameters:
               
   dependsOn:
     Type: CommaDelimitedList
-    
+      
+  hostedUIProviderCreds:
+    Type: String
+              
+  hostedUIDomainName:
+    Type: String
+                      
+  authProvidersUserPool:
+    Type: CommaDelimitedList
+      
+  hostedUIProviderMeta:
+    Type: String
+              
+  oAuthMetadata:
+    Type: String
+            
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
@@ -262,6 +272,8 @@ Resources:
         
         
         
+          PostAuthentication: !Ref functioncovidwatchPostAuthenticationArn
+        
         
           PostConfirmation: !Ref functioncovidwatchPostConfirmationArn
         
@@ -308,6 +320,15 @@ Resources:
       SourceArn: !GetAtt UserPool.Arn
     
   
+  
+  UserPoolPostAuthenticationLambdaInvokePermission: 
+    Type: "AWS::Lambda::Permission"
+    DependsOn: UserPool
+    Properties: 
+      Action: "lambda:invokeFunction"
+      Principal: "cognito-idp.amazonaws.com"
+      FunctionName: !Ref functioncovidwatchPostAuthenticationName
+      SourceArn: !GetAtt UserPool.Arn
     
   
   UserPoolPostConfirmationLambdaInvokePermission: 

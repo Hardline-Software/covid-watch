@@ -20,7 +20,8 @@
                 },
                 "covidwatchPostConfirmation": {
                     "GROUP": "users"
-                }
+                },
+                "covidwatchPostAuthentication": {}
             },
             "auth": {
                 "covidwatch": {

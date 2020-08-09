@@ -2,10 +2,6 @@
 	"AWSTemplateFormatVersion": "2010-09-09",
 	"Description": "Lambda resource stack creation using Amplify CLI",
 	"Parameters": {
-		"GROUP": {
-			"Type": "String",
-			"Default": ""
-		},
 		"modules": {
 			"Type": "String",
 			"Default": "",
@@ -37,6 +33,9 @@
 		},
 		"env": {
 			"Type": "String"
+		},
+		"TABLE": {
+			"Type": "String"
 		}
 	},
 	"Conditions": {
@@ -57,16 +56,16 @@
 				"aws:asset:property": "Code"
 			},
 			"Properties": {
-				"Handler": "index.handler",
+				"Handler": "dist/index.handler",
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"covidwatchPostConfirmation",
+						"covidwatchPostAuthentication",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"covidwatchPostConfirmation",
+									"covidwatchPostAuthentication",
 									"-",
 									{
 										"Ref": "env"
@@ -87,8 +86,8 @@
 						"REGION": {
 							"Ref": "AWS::Region"
 						},
-						"GROUP": {
-							"Ref": "GROUP"
+						"TABLE": {
+							"Ref": "TABLE"
 						}
 					}
 				},
@@ -98,11 +97,11 @@
 						"Arn"
 					]
 				},
-				"Runtime": "nodejs10.x",
+				"Runtime": "nodejs12.x",
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-covidwatch-dev-213909-deployment",
-					"S3Key": "amplify-builds/covidwatchPostConfirmation-47317765454a75545430-build.zip"
+					"S3Key": "amplify-builds/covidwatchPostAuthentication-6d6d756e54756674564b-build.zip"
 				}
 			}
 		},
@@ -112,12 +111,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"covidwatchPostConfirmation",
+						"covidwatchPostAuthentication",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"covidwatchPostConfirmation",
+									"covidwatchPostAuthentication",
 									"-",
 									{
 										"Ref": "env"

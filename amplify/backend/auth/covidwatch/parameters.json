@@ -59,12 +59,8 @@
     ],
     "userPoolGroups": true,
     "adminQueries": true,
-    "triggers": "{\"CustomMessage\":[\"verification-link\"],\"PostConfirmation\":[\"add-to-group\"]}",
+    "triggers": "{\"CustomMessage\":[\"verification-link\"],\"PostAuthentication\":[\"custom\"],\"PostConfirmation\":[\"add-to-group\"]}",
     "hostedUI": true,
-    "hostedUIDomainName": "covidwatch",
-    "authProvidersUserPool": [],
-    "hostedUIProviderMeta": "[]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://covidwatch.vercel.app/auth/\"],\"LogoutURLs\":[\"https://covidwatch.vercel.app/\"]}",
     "userPoolGroupList": [
         "admins",
         "managers",
@@ -108,6 +104,19 @@
                 "Arn",
                 "Name"
             ]
+        },
+        {
+            "category": "function",
+            "resourceName": "covidwatchPostAuthentication",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
         }
-    ]
+    ],
+    "hostedUIDomainName": "covidwatch",
+    "authProvidersUserPool": [],
+    "hostedUIProviderMeta": "[]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://covidwatch.vercel.app/\"],\"LogoutURLs\":[\"https://covidwatch.vercel.app/\"]}"
 }

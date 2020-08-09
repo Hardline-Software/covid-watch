@@ -24,6 +24,11 @@ type Organization @model(
   description: String
   photoUrl: String
   url: String
+  address: String!
+  country: String!
+  city: String!
+  subdivision: String!
+  postalCode: String!
   managementGroupId: ID! @auto
   userGroupId: ID! @auto
   users: [User!]! @connection(keyName: "byOrganization", fields: ["id"])
@@ -61,6 +66,7 @@ type User @model(
   photoUrl: String
   email: String!
   sex: Sex!
+  birthdate: AWSDate!
   phone: String
   organizationId: ID!
   organization: Organization @connection(fields: ["organizationId"])
