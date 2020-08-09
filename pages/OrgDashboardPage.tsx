@@ -9,9 +9,10 @@ import { useAuthUser } from '../hooks/useAuthUser'
 
 const OrgDashboardPage = () => {
   const { user } = useAuthUser()
+  console.log(user)
   const { data, loading } = useOrgDashboardQuery({
     variables: {
-      organizationId: user!.organizationId
+      organizationId: user?.organizationId!
     },
     skip: !user
   })

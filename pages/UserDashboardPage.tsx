@@ -12,7 +12,7 @@ const UserDashboardPage = () => {
   const { user } = useAuthUser()
   const { data, loading } = useUserDashboardQuery({
     variables: {
-      userId: user!.id
+      userId: user?.id!
     },
     skip: !user
   })
