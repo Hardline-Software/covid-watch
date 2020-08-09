@@ -1,0 +1,5 @@
+mutation CreateVaccination($vaccine: String!, $userId: ID!, $organizationId: ID!) {
+  createVaccination(input: { vaccine: $vaccine, userId: $userId, organizationId: $organizationId }) {
+    ...Vaccination
+  }
+}

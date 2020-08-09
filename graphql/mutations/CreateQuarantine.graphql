@@ -1,0 +1,13 @@
+mutation CreateQuarantine(
+  $start: AWSDate!
+  $end: AWSDate!
+  $location: QuarantineLocation!
+  $userId: ID!
+  $organizationId: ID!
+) {
+  createQuarantine(
+    input: { start: $start, end: $end, location: $location, userId: $userId, organizationId: $organizationId }
+  ) {
+    ...Quarantine
+  }
+}

@@ -1,0 +1,12 @@
+fragment HealthCheck on HealthCheck {
+  id
+  temperature
+  temperatureF
+  symptoms
+  createdAt
+  userId
+  organizationId
+  user {
+    ...User
+  }
+}

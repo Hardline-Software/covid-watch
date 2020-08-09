@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react'
-import { StyleSheet, Image, Text, View } from 'react-native'
+import { StyleSheet, Image, Text, View, ActivityIndicator } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { Auth } from 'aws-amplify'
@@ -13,12 +13,20 @@ type LoginError =
 type LoginChallenge = 'SMS_MFA' | 'SOFTWARE_TOKEN_MFA' | 'NEW_PASSWORD_REQUIRED' | 'MFA_SETUP'
 
 const LogInPage = () => {
+  const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [newPasswordRequired, setNewPasswordRequired] = useState(false)
+  const [newPasswordInvalid, setNewPasswordInvalid] = useState(false)
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false)
   const [errorCode, setErrorCode] = useState<LoginError | null>(null)
   const [challenge, setChallenge] = useState<LoginChallenge | null>(null)
+  const [mfaCode, setMfaCode] = useState('')
+  const [mfaCodeRequired, setMfaCodeRequired] = useState(false)
+  const [invalidMfaCode, setInvalidMfaCode] = useState(false)
+  const [user, setUser] = useState<any>(null)
   const navigation = useNavigation()
 
   const login = useCallback(async () => {
@@ -49,6 +57,7 @@ const LogInPage = () => {
         //   }
         // )
         // console.log(loggedUser)
+        console.log('New password required')
       } else if (user.challengeName === 'MFA_SETUP') {
         // This happens when the MFA method is TOTP
         // The user needs to setup the TOTP before using it
@@ -57,31 +66,31 @@ const LogInPage = () => {
       } else {
         // The user directly signs in
         console.log(user)
-        // Redirect to home page
+        // Redirect to user dasboard page
         navigation.reset({
           index: 0,
           routes: [{ name: 'UserDashboard' }]
         })
       }
     } catch (err) {
-      console.error(err)
+      console.log(err)
       setErrorCode(err.code)
       if (err.code === 'UserNotConfirmedException') {
         // The error happens if the user didn't finish the confirmation step when signing up
         // In this case you need to resend the code and confirm the user
         // About how to resend the code and confirm the user, please check the signUp part
-        console.error('User not confirmed')
+        console.log('User not confirmed')
       } else if (err.code === 'PasswordResetRequiredException') {
         // The error happens when the password is reset in the Cognito console
         // In this case you need to call forgotPassword to reset the password
         // Please check the Forgot Password part.
-        console.error('Password reset')
+        console.log('Password reset')
       } else if (err.code === 'NotAuthorizedException') {
         // The error happens when the incorrect password is provided
-        console.error('Incorrect password')
+        console.log('Incorrect password')
       } else if (err.code === 'UserNotFoundException') {
         // The error happens when the supplied username/email does not exist in the Cognito user pool
-        console.error('User not found')
+        console.log('User not found')
       } else {
         console.log(err)
       }
@@ -89,28 +98,298 @@ const LogInPage = () => {
     setLoading(false)
   }, [email, password])
 
-  return (
-    <View style={styles.container}>
-      <Image source={require('../assets/logo.png')} style={styles.icon} />
+  const createPassword = useCallback(async () => {
+    setLoading(true)
+    try {
+      const loggedUser = await Auth.completeNewPassword(user, newPassword, {
+        email,
+        birthdate: '2000-01-01',
+        family_name: 'Family',
+        given_name: 'Given',
+        gender: 'FEMALE'
+      })
+      console.log(loggedUser)
+      // Redirect to dashboard page
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'UserDashboard' }]
+      })
+    } catch (err) {
+      console.log(err)
+      if (err.code === 'InvalidPasswordException') {
+        setNewPasswordInvalid(true)
+      }
+    }
+    setLoading(false)
+  }, [newPassword, name, user])
+
+  const confirmSignIn = useCallback(async () => {
+    setLoading(true)
+    try {
+      await Auth.confirmSignIn(user, mfaCode).then(() => {
+        // Redirect to dashboard page
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'UserDashboard' }]
+        })
+      })
+    } catch (err) {
+      console.error(err)
+      setInvalidMfaCode(true)
+    }
+    setLoading(false)
+  }, [user, mfaCode])
+
+  const forceResetPassword = useCallback(async () => {
+    setLoading(true)
+    try {
+      await Auth.forgotPasswordSubmit(email, mfaCode, newPassword)
+      setErrorCode(null)
+    } catch (err) {
+      console.log(err)
+      if (err.code === 'CodeMismatchException' || err.code === 'ExpiredCodeException') {
+        setInvalidMfaCode(true)
+      } else if (err.code === 'InvalidParameterException') {
+        setNewPasswordInvalid(true)
+      }
+    }
+    setLoading(false)
+  }, [email, mfaCode, newPassword])
+
+  const forgotPassword = useCallback(async () => {
+    setLoading(true)
+    try {
+      await Auth.forgotPassword(email)
+    } catch (err) {
+      console.log(err)
+    }
+    setLoading(false)
+  }, [email])
+
+  let emailError
+  let passwordError
+
+  switch (errorCode) {
+    case 'NotAuthorizedException':
+      passwordError = 'Incorrect Password'
+      break
+    case 'UserNotFoundException':
+      emailError = 'User not found'
+      break
+    case 'UserNotConfirmedException':
+      emailError = 'Please confirm your email address'
+      break
+  }
+
+  let content
+
+  if (errorCode === 'PasswordResetRequiredException') {
+    content = (
       <View>
         <View style={(styles.section, styles.split)}>
-          <TextInput placeholder="Email" style={styles.textfield} onChangeText={(newVal: string) => setEmail(newVal)}>
-            {email}
-          </TextInput>
+          <Text style={{ textAlign: 'center', padding: 24 }}>
+            A password reset code as been sent to {email}. Please enter the code below to reset your password.
+          </Text>
+          <TextInput
+            autoFocus
+            autoCapitalize="none"
+            placeholder="6-Digit Code"
+            maxLength={6}
+            keyboardType="numeric"
+            style={styles.textfield}
+            value={mfaCode}
+            onChangeText={(newVal: string) => setMfaCode(newVal)}
+          />
+          {invalidMfaCode && <Text style={styles.errorText}>Invalid verification code</Text>}
+          {mfaCodeRequired && <Text style={styles.errorText}>You must enter a code to re-activate your account</Text>}
+          <TextInput
+            placeholder="New Password"
+            style={styles.textfield}
+            secureTextEntry={true}
+            value={newPassword}
+            onChangeText={(newVal: string) => setNewPassword(newVal)}
+          />
+          {newPasswordRequired && <Text style={styles.errorText}>You must enter a new password</Text>}
+          {newPasswordInvalid && (
+            <Text style={styles.errorText}>
+              Your new password must be at least 8 characters long and contain a number
+            </Text>
+          )}
+          <TextInput
+            placeholder="Confirm Password"
+            style={styles.textfield}
+            secureTextEntry={true}
+            value={confirmPassword}
+            onChangeText={(newVal: string) => setConfirmPassword(newVal)}
+          />
+          {confirmPasswordError && <Text style={styles.errorText}>The passwords must match</Text>}
+          {loading ? (
+            <ActivityIndicator style={styles.spinner} size="small" color="deepskyblue" />
+          ) : (
+            <TouchableOpacity
+              style={{
+                ...styles.button,
+                width: 200
+              }}
+              onPress={() => {
+                if (!mfaCode) {
+                  setMfaCodeRequired(true)
+                } else {
+                  if (!newPassword) {
+                    setNewPasswordRequired(true)
+                  } else if (newPassword !== confirmPassword) {
+                    setConfirmPasswordError(true)
+                  } else {
+                    setInvalidMfaCode(false)
+                    setMfaCodeRequired(false)
+                    setConfirmPasswordError(false)
+                    forceResetPassword()
+                  }
+                }
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Reset Password</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+    )
+  } else if (challenge === 'NEW_PASSWORD_REQUIRED') {
+    content = content = (
+      <View>
+        <View style={(styles.section, styles.split)}>
+          <Text style={{ textAlign: 'center', padding: 24 }}>
+            In order to secure your account, you must create a new password.
+          </Text>
+          <TextInput
+            placeholder="New Password"
+            style={styles.textfield}
+            secureTextEntry={true}
+            value={newPassword}
+            onChangeText={(newVal: string) => setNewPassword(newVal)}
+          />
+          {newPasswordRequired && <Text style={styles.errorText}>You must enter a new password</Text>}
+          {newPasswordInvalid && (
+            <Text style={styles.errorText}>
+              Your new password must be at least 8 characters long and contain a number
+            </Text>
+          )}
+          <TextInput
+            placeholder="Confirm Password"
+            style={styles.textfield}
+            secureTextEntry={true}
+            value={confirmPassword}
+            onChangeText={(newVal: string) => setConfirmPassword(newVal)}
+          />
+          {confirmPasswordError && <Text style={styles.errorText}>The passwords must match</Text>}
+          {loading ? (
+            <ActivityIndicator style={styles.spinner} size="small" color="deepskyblue" />
+          ) : (
+            <TouchableOpacity
+              style={{
+                ...styles.button,
+                width: 200
+              }}
+              onPress={(e) => {
+                if (!newPassword) {
+                  setNewPasswordRequired(true)
+                } else if (newPassword !== confirmPassword) {
+                  setConfirmPasswordError(true)
+                } else {
+                  setNewPasswordRequired(false)
+                  setNewPasswordInvalid(false)
+                  setConfirmPasswordError(false)
+                  createPassword()
+                }
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Reset Password</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+    )
+  } else if (challenge === 'SMS_MFA') {
+    content = (
+      <View>
+        <View style={(styles.section, styles.split)}>
+          <Text>
+            We&apos;ve sent a verification code via {user.challengeParam.CODE_DELIVERY_DELIVERY_MEDIUM} to{' '}
+            {user.challengeParam.CODE_DELIVERY_DESTINATION}{' '}
+          </Text>
+          <TextInput
+            autoFocus
+            autoCapitalize="none"
+            placeholder="6-Digit Code"
+            maxLength={6}
+            keyboardType="numeric"
+            style={styles.textfield}
+            value={mfaCode}
+            onChangeText={(newVal: string) => setMfaCode(newVal)}
+          />
+          {invalidMfaCode && <Text style={styles.errorText}>Invalid verification code</Text>}
+          {mfaCodeRequired && <Text style={styles.errorText}>You must enter a code to re-activate your account</Text>}
+          {loading ? (
+            <ActivityIndicator style={styles.spinner} size="small" color="deepskyblue" />
+          ) : (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                if (!mfaCode) {
+                  setMfaCodeRequired(true)
+                } else {
+                  setInvalidMfaCode(false)
+                  setMfaCodeRequired(false)
+                  confirmSignIn()
+                }
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Sign In</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+    )
+  } else {
+    content = (
+      <View>
+        <View style={(styles.section, styles.split)}>
+          <TextInput
+            autoFocus
+            autoCapitalize="none"
+            placeholder="Email"
+            style={styles.textfield}
+            value={email}
+            onChangeText={(newVal: string) => setEmail(newVal)}
+          />
+          {emailError && <Text style={styles.errorText}>{emailError}</Text>}
           <TextInput
             placeholder="Password"
             style={styles.textfield}
             secureTextEntry={true}
+            value={password}
             onChangeText={(newVal: string) => setPassword(newVal)}
-          ></TextInput>
-          <TouchableOpacity style={styles.button} onPress={login}>
-            <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Sign In</Text>
-          </TouchableOpacity>
+          />
+          {passwordError && <Text style={styles.errorText}>{passwordError}</Text>}
+          {loading ? (
+            <ActivityIndicator style={styles.spinner} size="small" color="deepskyblue" />
+          ) : (
+            <TouchableOpacity style={styles.button} onPress={login}>
+              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Sign In</Text>
+            </TouchableOpacity>
+          )}
         </View>
         <TouchableOpacity style={styles.section} onPress={() => {}}>
           <Text>Sign Up</Text>
         </TouchableOpacity>
       </View>
+    )
+  }
+
+  return (
+    <View style={styles.container}>
+      <Image source={require('../assets/logo.png')} style={styles.icon} />
+      {content}
     </View>
   )
 }
@@ -133,7 +412,8 @@ const styles = StyleSheet.create({
   },
   section: {
     alignItems: 'center',
-    padding: 15
+    padding: 15,
+    marginBottom: 128
   },
   split: {
     borderBottomWidth: 1,
@@ -156,6 +436,12 @@ const styles = StyleSheet.create({
   },
   signup: {
     color: 'blue'
+  },
+  errorText: {
+    color: 'red'
+  },
+  spinner: {
+    marginTop: 15
   }
 })
 

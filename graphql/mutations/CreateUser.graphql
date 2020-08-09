@@ -1,0 +1,25 @@
+mutation CreateUser(
+  $id: ID!
+  $givenName: String!
+  $familyName: String!
+  $email: String!
+  $sex: Sex!
+  $birthdate: AWSDate!
+  $phone: String!
+  $organizationId: ID!
+) {
+  createUser(
+    input: {
+      id: $id
+      givenName: $givenName
+      familyName: $familyName
+      email: $email
+      sex: $sex
+      birthdate: $birthdate
+      phone: $phone
+      organizationId: $organizationId
+    }
+  ) {
+    ...User
+  }
+}

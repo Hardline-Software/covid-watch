@@ -1,0 +1,19 @@
+mutation CreateVaccineDose(
+  $date: AWSDate!
+  $complete: Boolean!
+  $vaccinationId: ID!
+  $userId: ID!
+  $organizationId: ID!
+) {
+  createVaccineDose(
+    input: {
+      date: $date
+      complete: $complete
+      vaccinationId: $vaccinationId
+      userId: $userId
+      organizationId: $organizationId
+    }
+  ) {
+    ...VaccineDose
+  }
+}
