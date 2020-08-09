@@ -1,0 +1,25 @@
+mutation CreateTestResult(
+  $status: TestResultStatus!
+  $location: String
+  $type: TestType!
+  $retest: Boolean!
+  $started: AWSDate!
+  $completed: AWSDate
+  $userId: ID!
+  $organizationId: ID!
+) {
+  createTestResult(
+    input: {
+      status: $status
+      location: $location
+      type: $type
+      retest: $retest
+      started: $started
+      completed: $completed
+      userId: $userId
+      organizationId: $organizationId
+    }
+  ) {
+    ...TestResult
+  }
+}

@@ -1,0 +1,8 @@
+fragment VaccineDose on VaccineDose {
+  id
+  date
+  complete
+  vaccinationId
+  userId
+  organizationId
+}

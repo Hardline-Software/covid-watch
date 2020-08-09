@@ -1,0 +1,27 @@
+mutation CreateOrganization(
+  $name: String!
+  $description: String!
+  $photoUrl: String
+  $url: String
+  $address: String!
+  $country: String!
+  $city: String!
+  $postalCode: String!
+  $subdivision: String!
+) {
+  createOrganization(
+    input: {
+      name: $name
+      description: $description
+      photoUrl: $photoUrl
+      url: $url
+      address: $address
+      country: $country
+      city: $city
+      postalCode: $postalCode
+      subdivision: $subdivision
+    }
+  ) {
+    ...Organization
+  }
+}

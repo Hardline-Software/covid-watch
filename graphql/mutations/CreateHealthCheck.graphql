@@ -1,0 +1,7 @@
+mutation CreateHealthCheck($temperature: Float!, $symptoms: [Symptom!]!, $userId: ID!, $organizationId: ID!) {
+  createHealthCheck(
+    input: { temperature: $temperature, symptoms: $symptoms, userId: $userId, organizationId: $organizationId }
+  ) {
+    ...HealthCheck
+  }
+}

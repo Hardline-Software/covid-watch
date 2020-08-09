@@ -1,0 +1,16 @@
+fragment TestResult on TestResult {
+  id
+  status
+  location
+  type
+  retest
+  createdAt
+  updatedAt
+  started
+  completed
+  userId
+  organizationId
+  user {
+    ...User
+  }
+}
