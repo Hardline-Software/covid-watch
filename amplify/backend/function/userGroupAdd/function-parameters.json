@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "auth": {
+      "covidwatch": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
