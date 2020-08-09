@@ -13,8 +13,8 @@ const QuarantineWidget = () => {
   const [quarantineEndDate, setQuarantineEndDate] = useState('')
 
   useEffect(() => {
-    console.log(quarantines);
- }, [quarantines]);
+    console.log(quarantines)
+  }, [quarantines])
 
   const addQuarantineHandler = (id: string, name: string, members: string[], startDate: string, endDate: string) => {
     setQuarantines([...quarantines, generateQuarantine(id, name, members, startDate, endDate)])
@@ -33,12 +33,49 @@ const QuarantineWidget = () => {
   return (
     <Widget title="Quarantines">
       <View style={styles.container}>
-          <TextInput style={{padding: 20}} placeholder='a' value={quarantineID} onChangeText={(newVal: string) => setQuarantineID(newVal)}></TextInput>
-          <TextInput style={{padding: 20}} placeholder='b' value={quarantineName} onChangeText={(newVal: string) => setQuarantineName(newVal)}></TextInput>
-          <TextInput style={{padding: 20}} placeholder='c' onChangeText={(newVal: string) => setQuarantineMembers([...quarantineMembers, newVal])}></TextInput>
-          <TextInput style={{padding: 20}} placeholder='d' value={quarantineStartDate} onChangeText={(newVal: string) => setQuarantineStartDate(newVal)}></TextInput>
-          <TextInput style={{padding: 20}} placeholder='e' value={quarantineEndDate} onChangeText={(newVal: string) => setQuarantineEndDate(newVal)}></TextInput>
-        <TouchableOpacity style={{marginTop: 20, backgroundColor:'red'}} onPress={() => addQuarantineHandler(quarantineID, quarantineName, quarantineMembers, quarantineStartDate, quarantineEndDate)}><Text>ok</Text></TouchableOpacity>
+        <TextInput
+          style={{ padding: 20 }}
+          placeholder="a"
+          value={quarantineID}
+          onChangeText={(newVal: string) => setQuarantineID(newVal)}
+        ></TextInput>
+        <TextInput
+          style={{ padding: 20 }}
+          placeholder="b"
+          value={quarantineName}
+          onChangeText={(newVal: string) => setQuarantineName(newVal)}
+        ></TextInput>
+        <TextInput
+          style={{ padding: 20 }}
+          placeholder="c"
+          onChangeText={(newVal: string) => setQuarantineMembers([...quarantineMembers, newVal])}
+        ></TextInput>
+        <TextInput
+          style={{ padding: 20 }}
+          placeholder="d"
+          value={quarantineStartDate}
+          onChangeText={(newVal: string) => setQuarantineStartDate(newVal)}
+        ></TextInput>
+        <TextInput
+          style={{ padding: 20 }}
+          placeholder="e"
+          value={quarantineEndDate}
+          onChangeText={(newVal: string) => setQuarantineEndDate(newVal)}
+        ></TextInput>
+        <TouchableOpacity
+          style={{ marginTop: 20, backgroundColor: 'red' }}
+          onPress={() =>
+            addQuarantineHandler(
+              quarantineID,
+              quarantineName,
+              quarantineMembers,
+              quarantineStartDate,
+              quarantineEndDate
+            )
+          }
+        >
+          <Text>ok</Text>
+        </TouchableOpacity>
       </View>
     </Widget>
   )

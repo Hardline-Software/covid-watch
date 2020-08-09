@@ -1,7 +1,7 @@
 query OrgVaccinations($organizationId: ID!, $nextToken: String) {
-  orgQuarantines(organizationId: $organizationId, limit: 10, nextToken: $nextToken) {
+  orgVaccinations(organizationId: $organizationId, limit: 10, nextToken: $nextToken) {
     items {
-      ...Quarantine
+      ...Vaccination
     }
     nextToken
   }
