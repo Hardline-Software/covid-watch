@@ -6,7 +6,9 @@
     "ios": "npm run generate && expo start --ios",
     "web": "npm run generate && expo start --web",
     "generate": "graphql-codegen",
-    "amplify:covidwatchPostAuthentication": "cd ./amplify/backend/function/covidwatchPostAuthentication/src && npm run build"
+    "amplify:covidwatchPostAuthentication": "cd ./amplify/backend/function/covidwatchPostAuthentication/src && npm run build",
+    "amplify:orgUserGroups": "cd ./amplify/backend/function/orgUserGroups/src && npm install && npm run build",
+    "amplify:userGroupAdd": "cd ./amplify/backend/function/userGroupAdd/src && npm install && npm run build"
   },
   "dependencies": {
     "@apollo/client": "^3.1.3",
