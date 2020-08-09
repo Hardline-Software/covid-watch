@@ -1,15 +1,93 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { StyleSheet, Image, Text, View } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { useNavigation } from '@react-navigation/native'
+import { Auth } from 'aws-amplify'
 
-type PageProps = {
-  //navigation: StackNavigationProp<RootStack>
-}
+type LoginError =
+  | 'UserNotConfirmedException'
+  | 'PasswordResetRequiredException'
+  | 'NotAuthorizedException'
+  | 'UserNotFoundException'
 
-const LogInPage: FC<PageProps> = (props) => {
+type LoginChallenge = 'SMS_MFA' | 'SOFTWARE_TOKEN_MFA' | 'NEW_PASSWORD_REQUIRED' | 'MFA_SETUP'
+
+const LogInPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [errorCode, setErrorCode] = useState<LoginError | null>(null)
+  const [challenge, setChallenge] = useState<LoginChallenge | null>(null)
+  const navigation = useNavigation()
+
+  const login = useCallback(async () => {
+    setErrorCode(null)
+    setLoading(true)
+    try {
+      const user = await Auth.signIn(email, password)
+      setUser(user)
+      setChallenge(user.challengeName)
+      if (user.challengeName === 'SMS_MFA' || user.challengeName === 'SOFTWARE_TOKEN_MFA') {
+        console.log(user)
+      } else if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+        // You need to get the new password and required attributes from the UI inputs
+        // and then trigger the following function with a button click
+        // For example, the email and phone_number are required attributes
+        // const name = prompt('Please enter your name')
+        // let newPassword: string | null = null
+        // while (!newPassword) {
+        //   newPassword = prompt('Please enter a new password')
+        // }
+        // const loggedUser = await Auth.completeNewPassword(
+        //   user, // the Cognito User Object
+        //   newPassword, // the new password
+        //   // OPTIONAL, the required attributes
+        //   {
+        //     email,
+        //     name
+        //   }
+        // )
+        // console.log(loggedUser)
+      } else if (user.challengeName === 'MFA_SETUP') {
+        // This happens when the MFA method is TOTP
+        // The user needs to setup the TOTP before using it
+        // More info please check the Enabling MFA part
+        Auth.setupTOTP(user)
+      } else {
+        // The user directly signs in
+        console.log(user)
+        // Redirect to home page
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'UserDashboard' }]
+        })
+      }
+    } catch (err) {
+      console.error(err)
+      setErrorCode(err.code)
+      if (err.code === 'UserNotConfirmedException') {
+        // The error happens if the user didn't finish the confirmation step when signing up
+        // In this case you need to resend the code and confirm the user
+        // About how to resend the code and confirm the user, please check the signUp part
+        console.error('User not confirmed')
+      } else if (err.code === 'PasswordResetRequiredException') {
+        // The error happens when the password is reset in the Cognito console
+        // In this case you need to call forgotPassword to reset the password
+        // Please check the Forgot Password part.
+        console.error('Password reset')
+      } else if (err.code === 'NotAuthorizedException') {
+        // The error happens when the incorrect password is provided
+        console.error('Incorrect password')
+      } else if (err.code === 'UserNotFoundException') {
+        // The error happens when the supplied username/email does not exist in the Cognito user pool
+        console.error('User not found')
+      } else {
+        console.log(err)
+      }
+    }
+    setLoading(false)
+  }, [email, password])
 
   return (
     <View style={styles.container}>
@@ -25,7 +103,7 @@ const LogInPage: FC<PageProps> = (props) => {
             secureTextEntry={true}
             onChangeText={(newVal: string) => setPassword(newVal)}
           ></TextInput>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={login}>
             <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Sign In</Text>
           </TouchableOpacity>
         </View>

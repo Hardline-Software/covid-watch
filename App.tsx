@@ -28,7 +28,7 @@ const App = () => (
           <Stack.Screen name="PreSignUp" component={PreSignUpPage} />
           <Stack.Screen name="UserSignUp" component={UserSignUpPage} />
           <Stack.Screen name="OrgSignUp" component={OrgSignUpPage} />
-          <Stack.Screen name="UserDashboard" component={UserDashboardPage} />
+          <Stack.Screen name="UserDashboard" options={{ headerShown: false }} component={UserDashboardPage} />
           <Stack.Screen name="OrgDashboard" component={OrgDashboardPage} />
         </Stack.Navigator>
       </NavigationContainer>

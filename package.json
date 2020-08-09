@@ -1,10 +1,10 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "start": "npm run generate && expo start",
+    "android": "npm run generate && expo start --android",
+    "ios": "npm run generate && expo start --ios",
+    "web": "npm run generate && expo start --web",
     "generate": "graphql-codegen",
     "amplify:covidwatchPostAuthentication": "cd ./amplify/backend/function/covidwatchPostAuthentication/src && npm run build"
   },

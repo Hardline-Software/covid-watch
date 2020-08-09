@@ -5,8 +5,11 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Widget from '../components/Widget'
 import DailyCheckupWidget from '../components/DailyCheckupWidget'
 import Navigator from '../components/Navigator'
+import { useAuthUser } from '../hooks/useAuthUser'
 
 const UserDashboardPage = () => {
+  const { user } = useAuthUser()
+  console.log(user)
   return (
     <SafeAreaView style={styles.container}>
       <Navigator />
