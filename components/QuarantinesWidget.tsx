@@ -2,81 +2,30 @@ import React, { Component, useState, useEffect } from 'react'
 import Widget from './Widget'
 import { StyleSheet, Text, View, FlatList, Alert, TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import Modal from 'react-native-modal'
+import QuarantinePopup from '../components/QuarantinesPopup'
+import { MaterialIcons } from '@expo/vector-icons'
 
 const QuarantineWidget = () => {
-  const [quarantines, setQuarantines] = useState<object[]>([])
+  const [isModalVisible, setModalVisible] = useState(false)
 
-  const [quarantineID, setQuarantineID] = useState('')
-  const [quarantineName, setQuarantineName] = useState('')
-  const [quarantineMembers, setQuarantineMembers] = useState([''])
-  const [quarantineStartDate, setQuarantineStartDate] = useState('')
-  const [quarantineEndDate, setQuarantineEndDate] = useState('')
-
-  useEffect(() => {
-    console.log(quarantines)
-  }, [quarantines])
-
-  const addQuarantineHandler = (id: string, name: string, members: string[], startDate: string, endDate: string) => {
-    setQuarantines([...quarantines, generateQuarantine(id, name, members, startDate, endDate)])
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible)
   }
-
-  const generateQuarantine = (id: string, name: string, members: string[], startDate: string, endDate: string) => {
-    return {
-      id: id,
-      name: name,
-      members: members,
-      startDate: startDate,
-      endDate: endDate
-    }
-  }
-
   return (
-    <Widget title="Quarantines">
-      <View style={styles.container}>
-        <TextInput
-          style={{ padding: 20 }}
-          placeholder="a"
-          value={quarantineID}
-          onChangeText={(newVal: string) => setQuarantineID(newVal)}
-        ></TextInput>
-        <TextInput
-          style={{ padding: 20 }}
-          placeholder="b"
-          value={quarantineName}
-          onChangeText={(newVal: string) => setQuarantineName(newVal)}
-        ></TextInput>
-        <TextInput
-          style={{ padding: 20 }}
-          placeholder="c"
-          onChangeText={(newVal: string) => setQuarantineMembers([...quarantineMembers, newVal])}
-        ></TextInput>
-        <TextInput
-          style={{ padding: 20 }}
-          placeholder="d"
-          value={quarantineStartDate}
-          onChangeText={(newVal: string) => setQuarantineStartDate(newVal)}
-        ></TextInput>
-        <TextInput
-          style={{ padding: 20 }}
-          placeholder="e"
-          value={quarantineEndDate}
-          onChangeText={(newVal: string) => setQuarantineEndDate(newVal)}
-        ></TextInput>
-        <TouchableOpacity
-          style={{ marginTop: 20, backgroundColor: 'red' }}
-          onPress={() =>
-            addQuarantineHandler(
-              quarantineID,
-              quarantineName,
-              quarantineMembers,
-              quarantineStartDate,
-              quarantineEndDate
-            )
-          }
-        >
-          <Text>ok</Text>
-        </TouchableOpacity>
-      </View>
+    <Widget
+      title="Quarantines"
+      expandable={false}
+      base={<>
+        <Modal style={styles.quarantinePopup} isVisible={isModalVisible} coverScreen={true}>
+          <QuarantinePopup closeFunction={toggleModal} />
+        </Modal>
+        <TouchableOpacity style={{alignItems: 'flex-end', padding: 10}} onPress={toggleModal}>
+          <MaterialIcons name="add" size={30} color="black" />
+        </TouchableOpacity></>
+      }
+    >
+      <View style={styles.container}></View>
     </Widget>
   )
 }
@@ -86,6 +35,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  quarantinePopup: {
+    alignContent: 'center',
+    justifyContent: 'center'
   }
 })
 
