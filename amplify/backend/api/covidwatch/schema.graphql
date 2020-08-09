@@ -113,7 +113,7 @@ type HealthCheck @model(
   @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgHealthChecks")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }
@@ -161,7 +161,7 @@ type TestResult @model(
   @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgTestResults")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }
@@ -206,7 +206,7 @@ type Quarantine @model(
   @key(name: "byOrganization", fields: ["organizationId", "start"], queryField: "orgQuarantines")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }
@@ -241,7 +241,7 @@ type VaccineDose @model(
   @key(name: "byVaccination", fields: ["vaccinationId", "date"], queryField: "vaccinationDoses")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }
@@ -276,7 +276,7 @@ type Vaccination @model(
   @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgVaccinations")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }
