@@ -1,0 +1,8 @@
+query UserHealthChecks($userId: ID!, $nextToken: String) {
+  userHealthChecks(userId: $userId, limit: 10, nextToken: $nextToken) {
+    items {
+      ...HealthCheck
+    }
+    nextToken
+  }
+}

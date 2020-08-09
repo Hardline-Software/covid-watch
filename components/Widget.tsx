@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type WidgetProps = {
@@ -13,9 +13,9 @@ const Widget: FC<WidgetProps> = (props) => {
       <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{props.title}</Text>
       <View style={styles.inner}>{props.children}</View>
       <TouchableOpacity>
-        <AntDesign
+        <MaterialIcons
           style={styles.expandIcon}
-          name="downcircle"
+          name="arrow-drop-down-circle"
           size={24}
           color="deepskyblue"
           onPress={() => {

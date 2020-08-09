@@ -1,0 +1,11 @@
+fragment Organization on Organization {
+  id
+  name
+  description
+  url
+  photoUrl
+  address
+  city
+  subdivision
+  postalCode
+}

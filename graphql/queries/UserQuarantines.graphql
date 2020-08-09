@@ -1,0 +1,8 @@
+query UserQuarantines($userId: ID!, $nextToken: String) {
+  userQuarantines(userId: $userId, limit: 10, nextToken: $nextToken) {
+    items {
+      ...Quarantine
+    }
+    nextToken
+  }
+}

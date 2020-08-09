@@ -1,0 +1,8 @@
+query OrgVaccinations($organizationId: ID!, $nextToken: String) {
+  orgVaccinations(organizationId: $organizationId, limit: 10, nextToken: $nextToken) {
+    items {
+      ...Vaccination
+    }
+    nextToken
+  }
+}

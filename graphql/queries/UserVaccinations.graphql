@@ -1,0 +1,8 @@
+query UserVaccinations($userId: ID!, $nextToken: String) {
+  userVaccinations(userId: $userId, limit: 10, nextToken: $nextToken) {
+    items {
+      ...Vaccination
+    }
+    nextToken
+  }
+}

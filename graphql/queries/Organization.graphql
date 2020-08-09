@@ -1,0 +1,5 @@
+query Organization($id: ID!) {
+  organization(id: $id) {
+    ...Organization
+  }
+}

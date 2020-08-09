@@ -73,6 +73,7 @@ type User @model(
   healthChecks: [HealthCheck!]! @connection(keyName: "byUser", fields: ["id"])
   testResults: [TestResult!]! @connection(keyName: "byUser", fields: ["id"])
   quarantines: [Quarantine!]! @connection(keyName: "byUser", fields: ["id"])
+  vaccinations: [Vaccination!]! @connection(keyName: "byUser", fields: ["id"])
   managementGroupId: ID! @auto
 }
 
@@ -266,7 +267,7 @@ type Vaccination @model(
   )
   @key(fields: ["id"])
   @key(name: "byUser", fields: ["userId", "createdAt"], queryField: "userVaccinations")
-  @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgVaccination")
+  @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgVaccinations")
   @auth(
     rules: [
       { allow: owner, ownerField: "id", operations: [create, update, read] }

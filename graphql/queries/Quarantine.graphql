@@ -1,0 +1,5 @@
+query Quarantine($id: ID!) {
+  quarantine(id: $id) {
+    ...Quarantine
+  }
+}

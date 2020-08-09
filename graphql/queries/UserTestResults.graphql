@@ -1,0 +1,8 @@
+query UserTestResults($userId: ID!, $nextToken: String!) {
+  userTestResults(userId: $userId, limit: 10, nextToken: $nextToken) {
+    items {
+      ...TestResult
+    }
+    nextToken
+  }
+}

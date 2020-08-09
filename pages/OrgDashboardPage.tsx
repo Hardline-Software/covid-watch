@@ -1,18 +1,27 @@
 import React, { useState } from 'react'
-import { StyleSheet, Image, Text, View } from 'react-native'
+import { StyleSheet, Image, Text, View, FlatList } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Widget from '../components/Widget'
+import QuarantineWidget from '../components/QuarantinesWidget'
+import { useOrgDashboardQuery } from '../generated/graphql'
+import { useAuthUser } from '../hooks/useAuthUser'
 
 const OrgDashboardPage = () => {
+  const { user } = useAuthUser()
+  const { data, loading } = useOrgDashboardQuery({
+    variables: {
+      organizationId: user!.organizationId
+    },
+    skip: !user
+  })
+  console.log(data?.organization)
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>The Ohio State University</Text>
       </View>
-      <Widget title="Quarantines"></Widget>
-      <Widget title="Announcements"></Widget>
-      <Widget title="Manage Members"></Widget>
+      <QuarantineWidget />
     </SafeAreaView>
   )
 }

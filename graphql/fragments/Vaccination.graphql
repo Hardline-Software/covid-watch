@@ -1,0 +1,16 @@
+fragment Vaccination on Vaccination {
+  id
+  vaccine
+  userId
+  organizationId
+  createdAt
+  updatedAt
+  user {
+    ...User
+  }
+  doses {
+    items {
+      ...VaccineDose
+    }
+  }
+}

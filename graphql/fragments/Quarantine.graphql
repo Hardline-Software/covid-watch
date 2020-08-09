@@ -1,0 +1,13 @@
+fragment Quarantine on Quarantine {
+  id
+  start
+  end
+  location
+  userId
+  organizationId
+  createdAt
+  updatedAt
+  user {
+    ...User
+  }
+}
