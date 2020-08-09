@@ -4,7 +4,7 @@ import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Widget from '../components/Widget'
 import DailyCheckupWidget from '../components/DailyCheckupWidget'
-import Navigator from '../components/Navigator'
+import Navigator from '../components/Pulldown'
 import { useAuthUser } from '../hooks/useAuthUser'
 import { useUserDashboardQuery } from '../generated/graphql'
 

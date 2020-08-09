@@ -4,7 +4,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 
-const Navigator = () => {
+const Pulldown = () => {
   return (
     <View style={styles.container}>
       <View style={styles.icons}>
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Navigator
+export default Pulldown
