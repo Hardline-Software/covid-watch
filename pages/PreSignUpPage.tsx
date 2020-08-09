@@ -4,20 +4,19 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { TextInput } from 'react-native-gesture-handler'
 
 const SignUpPage = () => {
-
   const [date, setDate] = useState(new Date())
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.icon} source={require('../assets/logo.png')} />
       <TouchableOpacity style={styles.button}>
-        <Text style={{color: 'black', fontSize: 30}}>User</Text>
+        <Text style={{ color: 'black', fontSize: 30 }}>User</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>
-        <Text style={{color: 'black', fontSize: 30}}>Organization</Text>
+        <Text style={{ color: 'black', fontSize: 30 }}>Organization</Text>
       </TouchableOpacity>
     </SafeAreaView>
-  ) 
+  )
 }
 
 const styles = StyleSheet.create({
@@ -44,6 +43,5 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 })
-
 
 export default SignUpPage
