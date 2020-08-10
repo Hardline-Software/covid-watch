@@ -1,35 +1,118 @@
 import React, { FC, Component, useState, useEffect } from 'react'
 import Widget from './Widget'
-import { StyleSheet, Text, View, FlatList, Alert, TextInput } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Alert, TextInput, Picker } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import {
+  QuarantineLocation,
+  useCreateQuarantineMutation,
+  OrgQuarantinesQuery,
+  OrgQuarantinesQueryVariables,
+  OrgQuarantinesDocument
+} from '../generated/graphql'
+import { useOrgUsersQuery } from '../generated/graphql'
+import { useAuthUser } from '../hooks/useAuthUser'
 
-type QuarantinePopupProps = {
+type QuarantinesPopupProps = {
   closeFunction(): void
 }
 
-const QuarantinePopup: FC<QuarantinePopupProps> = (props) => {
+const QuarantinesPopup: FC<QuarantinesPopupProps> = (props) => {
+  const { user } = useAuthUser()
+
+  const [isPickerVisible, setPickerVisible] = useState(false)
+
+  const togglePicker = () => {
+    setPickerVisible(!isPickerVisible)
+  }
+
+  const { data, loading, error } = useOrgUsersQuery({
+    variables: {
+      organizationId: user?.organizationId!
+    },
+    skip: !user
+  })
+    const [createQuarantine] = useCreateQuarantineMutation({
+      update: (cache, { data }) => {
+        if (data) {
+          const usersQuery = cache.readQuery<OrgQuarantinesQuery, OrgQuarantinesQueryVariables>({
+            query: OrgQuarantinesDocument,
+            variables: {
+              organizationId: data?.createQuarantine?.organizationId!
+            }
+          })
+          if (usersQuery) {
+            cache.writeQuery<OrgQuarantinesQuery, OrgQuarantinesQueryVariables>({
+              query: OrgQuarantinesDocument,
+              variables: {
+                organizationId: data?.createQuarantine?.organizationId!
+              },
+              data: {
+                ...usersQuery,
+                orgQuarantines: {
+                  ...usersQuery.orgQuarantines,
+                  items: [...usersQuery!.orgQuarantines!.items!, data.createQuarantine!]
+                }
+              }
+            })
+          }
+        }
+      }
+    })
+
+
   const [quarantines, setQuarantines] = useState<object[]>([])
 
-  const [quarantineID, setQuarantineID] = useState('')
-  const [quarantineLocation, setQuarantineLocation] = useState('')
-  const [currentMember, setCurrentMember] = useState('')
-  const [quarantineMembers, setQuarantineMembers] = useState<string[]>([])
-  const [quarantineStartDate, setQuarantineStartDate] = useState('')
-  const [quarantineEndDate, setQuarantineEndDate] = useState('')
+  const [quarantineLocation, setQuarantineLocation] = useState<QuarantineLocation>()
+  const [quarantineMemberID, setQuarantineMemberID] = useState('')
+  const [quarantineStartDay, setQuarantineStartDay] = useState('')
+  const [quarantineStartMonth, setQuarantineStartMonth] = useState('')
+  const [quarantineStartYear, setQuarantineStartYear] = useState('')
+  const [quarantineEndDay, setQuarantineEndDay] = useState('')
+  const [quarantineEndMonth, setQuarantineEndMonth] = useState('')
+  const [quarantineEndYear, setQuarantineEndYear] = useState('')
+
+  const memberState = {
+    memberID: ''
+  }
 
   useEffect(() => {
     console.log(quarantines)
   }, [quarantines])
 
-  const addQuarantineHandler = (id: string, name: string, members: string[], startDate: string, endDate: string) => {
-    setQuarantines([...quarantines, generateQuarantine(id, name, members, startDate, endDate)])
+  const addQuarantineHandler = (
+    location: QuarantineLocation,
+    memberID: string,
+    startMonth: string,
+    startDay: string,
+    startYear: string,
+    endMonth: string,
+    endDay: string,
+    endYear: string
+  ) => {
+    setQuarantines([
+      ...quarantines,
+      generateQuarantine(
+        location,
+        memberID,
+        startYear + '-' + startMonth + '-' + startDay,
+        endYear + '-' + endMonth + '-' + endDay
+      )
+    ]),
+      createQuarantine({
+        variables: {
+          start: startYear + '-' + startMonth + '-' + startDay,
+          end: endYear + '-' + endMonth + '-' + endDay,
+          location: location,
+          userId: quarantineMemberID,
+          organizationId: user?.organizationId!
+        }
+      })
   }
 
-  const generateQuarantine = (id: string, name: string, members: string[], startDate: string, endDate: string) => {
+  const generateQuarantine = (location: QuarantineLocation, memberID: string, startDate: string, endDate: string) => {
     return {
-      id: id,
-      name: name,
-      members: members,
+      location: location,
+      memberID: memberID,
       startDate: startDate,
       endDate: endDate
     }
@@ -37,48 +120,85 @@ const QuarantinePopup: FC<QuarantinePopupProps> = (props) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.textInput}
-        placeholder="ID"
-        value={quarantineID}
-        onChangeText={(newVal: string) => setQuarantineID(newVal)}
-      ></TextInput>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Quarantine Location"
-        value={quarantineLocation}
-        onChangeText={(newVal: string) => setQuarantineLocation(newVal)}
-      ></TextInput>
-      <View style={styles.member}>
+      <Text>Start Date</Text>
+      <View style={styles.date}>
         <TextInput
-          style={styles.memberInput}
-          placeholder="Member Names"
-          onChangeText={(newVal: string) => setCurrentMember(newVal)}
+          style={styles.dateInput}
+          placeholder="MM"
+          value={quarantineStartMonth}
+          onChangeText={(newVal: string) => setQuarantineStartMonth(newVal)}
         ></TextInput>
-        <TouchableOpacity
-          style={styles.add}
-          onPress={() => setQuarantineMembers([...quarantineMembers, currentMember])}
+        <TextInput
+          style={styles.dateInput}
+          placeholder="DD"
+          value={quarantineStartDay}
+          onChangeText={(newVal: string) => setQuarantineStartDay(newVal)}
+        ></TextInput>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="YYYY"
+          value={quarantineStartYear}
+          onChangeText={(newVal: string) => setQuarantineStartYear(newVal)}
+        ></TextInput>
+      </View>
+      <Text style={{ paddingTop: 10 }}>End Date</Text>
+      <View style={styles.date}>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="DD"
+          value={quarantineEndMonth}
+          onChangeText={(newVal: string) => setQuarantineEndMonth(newVal)}
+        ></TextInput>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="DD"
+          value={quarantineEndDay}
+          onChangeText={(newVal: string) => setQuarantineEndDay(newVal)}
+        ></TextInput>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="YYYY"
+          value={quarantineEndYear}
+          onChangeText={(newVal: string) => setQuarantineEndYear(newVal)}
+        ></TextInput>
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        <Picker
+          style={{ marginTop: -20, height: 200, width: 150 }}
+          selectedValue={quarantineMemberID}
+          enabled={isPickerVisible}
+          onValueChange={(itemValue, itemIndex) => setQuarantineMemberID(itemValue)}
         >
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>Add Member</Text>
-        </TouchableOpacity>
+          {!loading &&
+            data?.orgUsers?.items?.map((user, key) => (
+              <Picker.Item key={user?.id} label={user?.givenName + ' ' + user?.familyName} value={user?.id} />
+            ))}
+        </Picker>
+        <Picker
+          style={{ marginTop: -20, height: 200, width: 150 }}
+          selectedValue={quarantineLocation}
+          enabled={isPickerVisible}
+          onValueChange={(itemValue, itemIndex) => setQuarantineLocation(itemValue)}
+        >
+          <Picker.Item label="Home" value={QuarantineLocation.HOME} />
+          <Picker.Item label="Hotel" value={QuarantineLocation.HOTEL} />
+          <Picker.Item label="Housing" value={QuarantineLocation.HOUSING} />
+        </Picker>
       </View>
 
-      <TextInput
-        style={styles.textInput}
-        placeholder="Start Date"
-        value={quarantineStartDate}
-        onChangeText={(newVal: string) => setQuarantineStartDate(newVal)}
-      ></TextInput>
-      <TextInput
-        style={styles.textInput}
-        placeholder="End Date"
-        value={quarantineEndDate}
-        onChangeText={(newVal: string) => setQuarantineEndDate(newVal)}
-      ></TextInput>
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
-          addQuarantineHandler(quarantineID, quarantineName, quarantineMembers, quarantineStartDate, quarantineEndDate)
+          addQuarantineHandler(
+            quarantineLocation!,
+            quarantineMemberID,
+            quarantineStartMonth,
+            quarantineStartDay,
+            quarantineStartYear,
+            quarantineEndMonth,
+            quarantineEndDay,
+            quarantineEndYear
+          )
         }
       >
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Add Quarantine</Text>
@@ -98,14 +218,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     backgroundColor: 'white',
     borderRadius: 7.5,
-    paddingVertical: 10
+    paddingVertical: 20
   },
   textInput: {
-      padding: 10,
-      backgroundColor: '#F2F2F2',
-      width: '60%',
-      margin: 5,
-      borderRadius: 7.5
+    padding: 10,
+    backgroundColor: '#F2F2F2',
+    width: '60%',
+    margin: 5,
+    borderRadius: 7.5
   },
   button: {
     width: 170,
@@ -117,10 +237,10 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   member: {
-      flexDirection: 'row',
-      backgroundColor: '#F2F2F2',
-      borderRadius: 7.5,
-      width: '60%'
+    flexDirection: 'row',
+    backgroundColor: '#F2F2F2',
+    borderRadius: 7.5,
+    width: '60%'
   },
   memberInput: {
     flex: 5,
@@ -130,14 +250,17 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 7.5
   },
-  add: {
-      flex: 1,
+  date: {
+    flexDirection: 'row'
+  },
+  dateInput: {
     padding: 10,
-    backgroundColor: 'deepskyblue',
+    backgroundColor: '#F2F2F2',
+    width: '10%',
     margin: 5,
     borderRadius: 7.5,
-    alignContent: 'flex-end',
+    textAlign: 'center'
   }
 })
 
-export default QuarantinePopup
+export default QuarantinesPopup

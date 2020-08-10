@@ -3,23 +3,23 @@ import { StyleSheet, Image, Text, View, FlatList } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Widget from '../components/Widget'
-import QuarantineWidget from '../components/QuarantinesWidget'
-import { useOrgUsersQuery } from '../generated/graphql'
+import QuarantinesWidget from '../components/QuarantinesWidget'
+import { useOrgUsersQuery, useOrgQuarantinesQuery } from '../generated/graphql'
 import { useAuthUser } from '../hooks/useAuthUser'
 
 const OrgDashboardPage = () => {
   const { user } = useAuthUser()
 
-  const { data, loading, error } = useOrgUsersQuery({
+  const { data: dataU, loading: loadingU, error: errorU } = useOrgUsersQuery({
     variables: {
       organizationId: user?.organizationId!
     },
     skip: !user
   })
 
-  console.log(data?.orgUsers?.items)
-  console.log(loading)
-  console.log(error)
+  console.log(dataU?.orgUsers?.items)
+  console.log(loadingU)
+  console.log(errorU)
 
   var memberArray = ['Alex', 'Gent', 'Kirk']
 
@@ -29,7 +29,7 @@ const OrgDashboardPage = () => {
         <Text style={styles.headerText}>The Ohio State University</Text>
       </View>
 
-      <QuarantineWidget />
+      <QuarantinesWidget />
 
       <Widget
         title="Manage Members"
@@ -37,10 +37,10 @@ const OrgDashboardPage = () => {
         base={
           <View style={styles.quarantineBox}>
             <View>
-              {loading ? (
+              {loadingU ? (
                 <Text>Loading...</Text>
               ) : (
-                data?.orgUsers?.items?.map((item, key) => (
+                dataU?.orgUsers?.items?.map((item, key) => (
                   <Text style={styles.memberList} key={item?.id}>
                     {item?.givenName} {item?.familyName}
                   </Text>
