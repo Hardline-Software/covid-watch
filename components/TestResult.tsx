@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { TestResultFragment, TestResultStatus } from '../generated/graphql'
+import { format } from 'date-fns'
 
 type TestResultProps = {
   data: TestResultFragment
@@ -37,7 +38,7 @@ const TestResult: FC<TestResultProps> = ({ data }) => {
           ? 'In Progress'
           : 'Unknown'}
         {`\n`}
-        {data.updatedAt}
+        {format(new Date(data!.updatedAt!), 'MM/dd/yyyy')}
       </Text>
     </View>
   )
