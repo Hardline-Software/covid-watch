@@ -7,10 +7,12 @@ import {
   useCreateQuarantineMutation,
   UserQuarantinesDocument,
   UserQuarantinesQuery,
-  UserQuarantinesQueryVariables
+  UserQuarantinesQueryVariables,
+  QuarantineLocation
 } from '../generated/graphql'
 import TextButton from './TextButton'
 import { MaterialIcons } from '@expo/vector-icons'
+import { format, differenceInDays } from 'date-fns'
 
 const PersonalQuarantine = () => {
   const { user } = useAuthUser()
@@ -53,22 +55,16 @@ const PersonalQuarantine = () => {
   return (
     <Widget
       title="Personal Quarantine"
-      expandable={data?.userQuarantines?.items ? true : false}
+      expandable={data?.userQuarantines && data!.userQuarantines!.items!.length > 0 ? true : false}
       base={
-        data?.userQuarantines ? (
+        data?.userQuarantines && data!.userQuarantines!.items!.length > 0 ? (
           <>
             <View style={{ ...styles.container, backgroundColor: '#b5ffc3' }}>
-              <Text style={styles.big}>{(new Date().getTime() - new Date().getTime()) / 86400000}</Text>
-              <Text>days in quarantine</Text>
+              <Text style={styles.big}>
+                {differenceInDays(new Date(), new Date(data!.userQuarantines!.items![0]!.start))}
+              </Text>
+              <Text>day(s) in quarantine</Text>
             </View>
-            <TextButton
-              color="green"
-              toggleFunction={() => {
-                // remove quarantine
-              }}
-            >
-              <Text style={{ fontWeight: 'bold', color: 'white' }}>Finish Quarantine&nbsp;</Text>
-            </TextButton>
           </>
         ) : (
           <>
@@ -78,7 +74,15 @@ const PersonalQuarantine = () => {
             <TextButton
               color="red"
               toggleFunction={() => {
-                // add quarantine through mutation
+                createQuarantine({
+                  variables: {
+                    userId: user!.id,
+                    start: format(new Date(), 'yyyy-MM-dd'),
+                    organizationId: user!.organizationId,
+                    end: format(new Date(new Date().getTime() + 1210000000), 'yyyy-MM-dd'),
+                    location: QuarantineLocation.HOME // TODO make a modal selector for this
+                  }
+                })
               }}
             >
               <Text style={{ fontWeight: 'bold', color: 'white' }}>Begin Quarantine&nbsp;</Text>
@@ -87,7 +91,13 @@ const PersonalQuarantine = () => {
           </>
         )
       }
-    ></Widget>
+    >
+      <View style={{ ...styles.container, backgroundColor: '#b5ffc3' }}>
+        <Text style={{ fontSize: 12 }}>
+          Quarantine ends on {format(new Date(data!.userQuarantines!.items![0]!.end), 'MM/dd/yyyy')}
+        </Text>
+      </View>
+    </Widget>
   )
 }
 

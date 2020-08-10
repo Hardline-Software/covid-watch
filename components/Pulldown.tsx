@@ -2,16 +2,23 @@ import React, { FC } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { MaterialIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 type PulldownProps = {
   name: string | undefined
 }
 
 const Pulldown: FC<PulldownProps> = ({ name }) => {
+  const navigation = useNavigation()
+
   return (
     <View style={styles.container}>
       <View style={styles.icons}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Profile')
+          }}
+        >
           <MaterialIcons name="person" size={40} color="black" />
         </TouchableOpacity>
       </View>

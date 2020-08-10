@@ -15,6 +15,7 @@ type VaccinationsPopupProps = {
 
 const VaccinationsPopup: FC<VaccinationsPopupProps> = (props) => {
   const [name, setName] = useState('')
+  const [date, setDate] = useState('')
 
   const { user } = useAuthUser()
 
@@ -53,6 +54,12 @@ const VaccinationsPopup: FC<VaccinationsPopupProps> = (props) => {
         placeholder="Vaccine Name"
         value={name}
         onChangeText={(newVal: string) => setName(newVal)}
+      ></TextInput>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Vaccination Date"
+        value={date}
+        onChangeText={(newVal: string) => setDate(newVal)}
       ></TextInput>
       <TouchableOpacity
         style={styles.button}
