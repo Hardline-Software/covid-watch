@@ -16,6 +16,8 @@ const HealthSummaryPopup: FC<HealthSummaryPopupProps> = (props) => {
         <Text>Quit</Text>
       </TouchableOpacity>
 
+      <Widget />
+
     </View>
   )
 }

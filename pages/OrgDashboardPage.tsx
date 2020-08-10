@@ -7,9 +7,12 @@ import QuarantinesWidget from '../components/QuarantinesWidget'
 import { useOrgUsersQuery, useOrgQuarantinesQuery } from '../generated/graphql'
 import { useAuthUser } from '../hooks/useAuthUser'
 import ManageMembersWidget from '../components/ManageMembersWidget'
+import { Auth } from 'aws-amplify'
+import { useNavigation } from '@react-navigation/native'
 
 const OrgDashboardPage = () => {
   const { user } = useAuthUser()
+  const navigation = useNavigation()
 
   const { data: dataU, loading: loadingU, error: errorU } = useOrgUsersQuery({
     variables: {
@@ -25,7 +28,7 @@ const OrgDashboardPage = () => {
   var memberArray = ['Alex', 'Gent', 'Kirk']
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: 'white' }}>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>The Ohio State University</Text>
@@ -34,6 +37,21 @@ const OrgDashboardPage = () => {
         <QuarantinesWidget />
 
         <ManageMembersWidget />
+        <View style={{alignItems: 'center'}}>
+          <TouchableOpacity
+            style={styles.healthSum}
+            onPress={() => {
+              Auth.signOut().then(() => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Log In' }]
+                })
+              })
+            }}
+          >
+            <Text style={styles.currentOrgText}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </ScrollView>
   )
@@ -60,7 +78,29 @@ const styles = StyleSheet.create({
   memberList: {
     fontSize: 20,
     padding: 10
-  }
+  },
+  currentOrg: {
+    backgroundColor: '#C4C4C4',
+    borderRadius: 7.5,
+    alignItems: 'center',
+    padding: 15,
+    width: '50%',
+    marginTop: 50
+  },
+  currentOrgText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20
+  },
+  healthSum: {
+    backgroundColor: 'deepskyblue',
+    borderRadius: 7.5,
+    alignItems: 'center',
+    padding: 15,
+    width: '50%',
+    marginTop: 10
+  },
+  healthSummaryPopup: {}
 })
 
 export default OrgDashboardPage
