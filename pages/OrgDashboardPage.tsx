@@ -25,8 +25,6 @@ const OrgDashboardPage = () => {
   console.log(loadingU)
   console.log(errorU)
 
-  var memberArray = ['Alex', 'Gent', 'Kirk']
-
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <SafeAreaView style={styles.container}>
@@ -37,7 +35,7 @@ const OrgDashboardPage = () => {
         <QuarantinesWidget />
 
         <ManageMembersWidget />
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <TouchableOpacity
             style={styles.healthSum}
             onPress={() => {

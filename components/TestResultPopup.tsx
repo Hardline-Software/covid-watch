@@ -67,12 +67,6 @@ const TestResultPopup: FC<TestResultPopupProps> = (props) => {
       ></TextInput>
       <TextInput
         style={styles.textInput}
-        placeholder="Test Name"
-        value={testName}
-        onChangeText={(newVal: string) => setTestName(newVal)}
-      ></TextInput>
-      <TextInput
-        style={styles.textInput}
         placeholder="Result"
         value={result}
         onChangeText={(newVal: string) => setResult(newVal)}
@@ -129,8 +123,8 @@ const TestResultPopup: FC<TestResultPopupProps> = (props) => {
               location: testCenterName,
               type: TestType.VIRAL,
               retest: false,
-              started: testYear+'-'+testMonth+'-'+testDay,
-              completed: resultYear+'-'+resultMonth+'-'+resultDay,
+              started: testYear + '-' + testMonth + '-' + testDay,
+              completed: resultYear + '-' + resultMonth + '-' + resultDay,
               organizationId: user!.organizationId
             }
           }).then(() => {

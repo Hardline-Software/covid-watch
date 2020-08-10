@@ -29,7 +29,7 @@ const UserDashboardPage = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
         <SafeAreaView style={styles.container}>
           <Pulldown name={data?.user?.givenName} />
           <DailyCheckupWidget />

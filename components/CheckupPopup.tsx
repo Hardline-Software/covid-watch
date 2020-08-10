@@ -22,23 +22,23 @@ const CheckupPopup: FC<CheckupPopupProps> = (props) => {
   const [createHealthCheck] = useCreateHealthCheckMutation({
     update: (cache, { data }) => {
       if (data) {
-        const usersQuery = cache.readQuery<UserHealthChecksQuery, UserHealthChecksQueryVariables>({
+        const healthChecksQuery = cache.readQuery<UserHealthChecksQuery, UserHealthChecksQueryVariables>({
           query: UserHealthChecksDocument,
           variables: {
             userId: data?.createHealthCheck?.userId!
           }
         })
-        if (usersQuery) {
+        if (healthChecksQuery) {
           cache.writeQuery<UserHealthChecksQuery, UserHealthChecksQueryVariables>({
             query: UserHealthChecksDocument,
             variables: {
               userId: data?.createHealthCheck?.userId!
             },
             data: {
-              ...usersQuery,
+              ...healthChecksQuery,
               userHealthChecks: {
-                ...usersQuery.userHealthChecks,
-                items: [...usersQuery!.userHealthChecks!.items!, data.createHealthCheck!]
+                ...healthChecksQuery.userHealthChecks,
+                items: [...healthChecksQuery!.userHealthChecks!.items!, data.createHealthCheck!]
               }
             }
           })
@@ -51,7 +51,7 @@ const CheckupPopup: FC<CheckupPopupProps> = (props) => {
     <View style={styles.container}>
       <TextInput
         style={styles.textInput}
-        placeholder="Temperature (&#186;C)"
+        placeholder="Temperature (&#186;F)"
         value={temperature}
         onChangeText={(newVal: string) => setTemperature(newVal)}
       ></TextInput>
@@ -67,7 +67,7 @@ const CheckupPopup: FC<CheckupPopupProps> = (props) => {
           createHealthCheck({
             variables: {
               userId: user!.id,
-              temperature: parseFloat(temperature),
+              temperature: (parseFloat(temperature) - 32) * (5 / 9),
               symptoms: [],
               organizationId: user!.organizationId
             }
@@ -76,7 +76,7 @@ const CheckupPopup: FC<CheckupPopupProps> = (props) => {
           })
         }
       >
-        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Add Test Result</Text>
+        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Add Temp</Text>
       </TouchableOpacity>
       <TouchableOpacity style={{ ...styles.button, backgroundColor: '#c70202' }} onPress={props.closeFunction}>
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Cancel</Text>

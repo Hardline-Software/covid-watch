@@ -3,19 +3,21 @@ import Widget from './Widget'
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 import Symptom from '../components/Symptom'
 import { useAuthUser } from '../hooks/useAuthUser'
-import { useHealthCheckQuery } from '../generated/graphql'
+import { useUserHealthChecksQuery } from '../generated/graphql'
 
 const DailyCheckupWidget = () => {
   const { user } = useAuthUser()
 
-  const { data, loading, error } = useHealthCheckQuery({
+  const { data, loading, error } = useUserHealthChecksQuery({
     variables: {
-      id: user?.id!
+      userId: user?.id!
     },
     skip: !user
   })
 
-  const healthCheck = data?.healthCheck || undefined
+  const healthCheck = data?.userHealthChecks?.items
+    ? data.userHealthChecks.items[data.userHealthChecks.items.length - 1]
+    : undefined
   return (
     <Widget
       title="Your Daily Checkup"
@@ -25,12 +27,12 @@ const DailyCheckupWidget = () => {
           <View style={styles.container}>
             <View>
               <Text style={{ fontWeight: 'bold', fontSize: 28 }}>
-                {healthCheck ? `${healthCheck.temperatureF!.toFixed(1)}&#186;F` : '--'}
+                {healthCheck ? `${healthCheck.temperatureF!.toFixed(1)}` : '--'} &#186;F
               </Text>
             </View>
             <View style={{ alignItems: 'center', flexDirection: 'row' }}>
               <Text style={{ fontWeight: 'bold', fontSize: 24 }}>
-                {healthCheck ? `${healthCheck.symptoms!.length}&nbsp;` : '0 '}
+                {healthCheck ? `${healthCheck.symptoms!.length}` : '0 '} &nbsp;
               </Text>
               <Text>symptoms</Text>
             </View>
