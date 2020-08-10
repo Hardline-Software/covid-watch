@@ -1,19 +1,29 @@
-import React, { useState } from 'react'
+import React, { FC } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
-const Pulldown = () => {
+type PulldownProps = {
+  name: string | undefined
+}
+
+const Pulldown: FC<PulldownProps> = ({ name }) => {
+  const navigation = useNavigation()
+
   return (
     <View style={styles.container}>
       <View style={styles.icons}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Profile')
+          }}
+        >
           <MaterialIcons name="person" size={40} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <MaterialCommunityIcons name="office-building" size={40} color="black" />
-        </TouchableOpacity>
+      </View>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Welcome, {name}!</Text>
       </View>
     </View>
   )
@@ -26,7 +36,14 @@ const styles = StyleSheet.create({
   },
   icons: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-end'
+  },
+  header: {
+    alignItems: 'center',
+    fontSize: 36
+  },
+  headerText: {
+    fontSize: 36
   }
 })
 

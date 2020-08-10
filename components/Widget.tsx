@@ -41,7 +41,9 @@ const styles = StyleSheet.create({
   },
   inner: {
     backgroundColor: '#E8E8E8',
-    borderRadius: 7.5
+    borderRadius: 7.5,
+    flexDirection: 'column',
+    overflow: 'hidden'
   },
   expandIcon: {
     position: 'absolute',

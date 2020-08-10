@@ -2,15 +2,20 @@ import React from 'react'
 import Widget from './Widget'
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 import Symptom from '../components/Symptom'
+import { useAuthUser } from '../hooks/useAuthUser'
+import { useHealthCheckQuery } from '../generated/graphql'
 
 const DailyCheckupWidget = () => {
-  const symptoms: object[] = [{}, {}] // TODO hook into backend
-  const temp = 38
+  const { user } = useAuthUser()
 
-  const cToF = (c: number) => {
-    return (c * 9) / 5 + 32
-  }
+  const { data, loading, error } = useHealthCheckQuery({
+    variables: {
+      id: user?.id!
+    },
+    skip: !user
+  })
 
+  const healthCheck = data?.healthCheck || undefined
   return (
     <Widget
       title="Your Daily Checkup"
@@ -19,14 +24,18 @@ const DailyCheckupWidget = () => {
         <>
           <View style={styles.container}>
             <View>
-              <Text style={{ fontWeight: 'bold', fontSize: 28 }}>{cToF(temp).toFixed(1)}&#186;F</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 28 }}>
+                {healthCheck ? `${healthCheck.temperatureF!.toFixed(1)}&#186;F` : '--'}
+              </Text>
             </View>
             <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{symptoms.length}&nbsp;</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 24 }}>
+                {healthCheck ? `${healthCheck.symptoms!.length}&nbsp;` : '0 '}
+              </Text>
               <Text>symptoms</Text>
             </View>
           </View>
-          {(temp > 37.778 || symptoms.length > 2) && (
+          {healthCheck && (healthCheck.temperatureF! > 37.778 || healthCheck.symptoms!.length > 2) && (
             <View style={styles.container}>
               <Text style={{ fontWeight: 'bold', fontSize: 14, color: 'red' }}>
                 You may want to speak with your primary care provider.
@@ -39,17 +48,11 @@ const DailyCheckupWidget = () => {
       <View style={styles.container}>
         <View>
           <Text style={{ fontWeight: 'bold', fontSize: 14 }}>
-            {symptoms.length > 0 ? 'Today you are feeling:' : "You didn't report any symptoms today!"}
+            {healthCheck && healthCheck.symptoms!.length > 0
+              ? 'Today you are feeling:'
+              : "You didn't report any symptoms today!"}
           </Text>
-          {symptoms.length > 0 && (
-            <View style={styles.symptoms}>
-              <FlatList
-                data={symptoms}
-                renderItem={({ item, index }) => <Symptom desc={'symptom ' + index} />}
-                keyExtractor={(item: object, index: number) => `${index}`}
-              />
-            </View>
-          )}
+          {healthCheck && healthCheck.symptoms!.length > 0 && <View style={styles.symptoms}></View>}
         </View>
       </View>
     </Widget>

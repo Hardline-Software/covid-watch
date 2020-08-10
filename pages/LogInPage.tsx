@@ -135,7 +135,7 @@ const LogInPage = () => {
       // Redirect to dashboard page
       navigation.reset({
         index: 0,
-        routes: [{ name: 'UserDashboard' }]
+        routes: [{ name: 'User Dashboard' }]
       })
     } catch (err) {
       console.log(err)

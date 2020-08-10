@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { StyleSheet, Image, Text, View } from 'react-native'
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import { StyleSheet, ScrollView, Image, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Widget from '../components/Widget'
 import DailyCheckupWidget from '../components/DailyCheckupWidget'
-import Navigator from '../components/Pulldown'
+import TestResultsWidget from '../components/TestResultsWidget'
+import Pulldown from '../components/Pulldown'
 import { useAuthUser } from '../hooks/useAuthUser'
 import { useUserDashboardQuery } from '../generated/graphql'
+import VaccinationsWidget from '../components/VaccinationsWidget'
+import PersonalQuarantineWidget from '../components/PersonalQuarantineWidget'
 
 const UserDashboardPage = () => {
   const { user } = useAuthUser()
@@ -16,15 +17,16 @@ const UserDashboardPage = () => {
     },
     skip: !user
   })
-  console.log(data?.user)
   return (
-    <SafeAreaView style={styles.container}>
-      <Navigator />
-      <DailyCheckupWidget />
-      <Widget title="Test Results"></Widget>
-      <Widget title="Quarantine"></Widget>
-      <Widget title="Vaccinations"></Widget>
-    </SafeAreaView>
+    <ScrollView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <Pulldown name={data?.user?.givenName} />
+        <DailyCheckupWidget />
+        <TestResultsWidget />
+        <VaccinationsWidget />
+        <PersonalQuarantineWidget />
+      </SafeAreaView>
+    </ScrollView>
   )
 }
 

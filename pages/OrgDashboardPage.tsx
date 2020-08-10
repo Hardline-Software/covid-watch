@@ -1,29 +1,41 @@
 import React, { useState } from 'react'
-import { StyleSheet, Image, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Image, Text, View, FlatList, ScrollView } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Widget from '../components/Widget'
-import QuarantineWidget from '../components/QuarantinesWidget'
-import { useOrgDashboardQuery } from '../generated/graphql'
+import QuarantinesWidget from '../components/QuarantinesWidget'
+import { useOrgUsersQuery, useOrgQuarantinesQuery } from '../generated/graphql'
 import { useAuthUser } from '../hooks/useAuthUser'
+import ManageMembersWidget from '../components/ManageMembersWidget'
 
 const OrgDashboardPage = () => {
   const { user } = useAuthUser()
-  console.log(user)
-  const { data, loading } = useOrgDashboardQuery({
+
+  const { data: dataU, loading: loadingU, error: errorU } = useOrgUsersQuery({
     variables: {
       organizationId: user?.organizationId!
     },
     skip: !user
   })
-  console.log(data?.organization)
+
+  console.log(dataU?.orgUsers?.items)
+  console.log(loadingU)
+  console.log(errorU)
+
+  var memberArray = ['Alex', 'Gent', 'Kirk']
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>The Ohio State University</Text>
-      </View>
-      <QuarantineWidget />
-    </SafeAreaView>
+    <ScrollView>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>The Ohio State University</Text>
+        </View>
+
+        <QuarantinesWidget />
+
+        <ManageMembersWidget />
+      </SafeAreaView>
+    </ScrollView>
   )
 }
 
@@ -39,7 +51,15 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 40,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  quarantineBox: {
+    padding: 15
+  },
+  memberList: {
+    fontSize: 20,
+    padding: 10
   }
 })
 
