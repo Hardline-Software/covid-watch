@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "covid-watch",
+    "name": "COVID Watch",
     "slug": "covid-watch",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,8 +16,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "com.kirkbrauer.covidwatch",
+      "versionCode": 1
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kirkbrauer.covidwatch",
+      "buildNumber": "1.0.0"
     },
     "web": {
       "favicon": "./assets/favicon.png"

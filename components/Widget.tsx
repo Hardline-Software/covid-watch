@@ -1,28 +1,35 @@
 import React, { FC, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type WidgetProps = {
   title: string
+  base: React.ReactNode
+  expandable: boolean
 }
 
-const Widget: FC<WidgetProps> = (props) => {
+const Widget: FC<WidgetProps> = ({ title, base, children, expandable }) => {
+  const [expanded, setExpanded] = useState(false)
+
   return (
     <View style={styles.outer}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{props.title}</Text>
-      <View style={styles.inner}>{props.children}</View>
-      <TouchableOpacity>
-        <MaterialIcons
+      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{title}</Text>
+      <View style={styles.inner}>
+        {base}
+        {expanded && children}
+      </View>
+      {expandable && (
+        <MaterialCommunityIcons
           style={styles.expandIcon}
-          name="arrow-drop-down-circle"
-          size={24}
+          name={expanded ? 'chevron-up-circle' : 'chevron-down-circle'}
+          size={30}
           color="deepskyblue"
           onPress={() => {
-            // TODO flip  the arrow
+            setExpanded(!expanded)
           }}
         />
-      </TouchableOpacity>
+      )}
     </View>
   )
 }
@@ -34,13 +41,17 @@ const styles = StyleSheet.create({
   },
   inner: {
     backgroundColor: '#E8E8E8',
-    padding: 10,
-    borderRadius: 7.5
+    borderRadius: 7.5,
+    flexDirection: 'column',
+    overflow: 'hidden'
   },
   expandIcon: {
     position: 'absolute',
+    //backgroundColor: 'red',
+    width: 30,
+    height: 30,
     bottom: -14,
-    left: '46%'
+    right: -14
   }
 })
 

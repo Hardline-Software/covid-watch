@@ -38,6 +38,11 @@ type Organization @model(
   vaccinations: [Vaccination!]! @connection(keyName: "byOrganization", fields: ["id"])
 }
 
+enum UserRole {
+  MANAGER
+  USER
+}
+
 type User @model(
     queries: {
       get: "user"
@@ -61,6 +66,7 @@ type User @model(
   ) 
 {
   id: ID!
+  role: UserRole!
   givenName: String!
   familyName: String!
   photoUrl: String
@@ -107,7 +113,8 @@ type HealthCheck @model(
   @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgHealthChecks")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
+      { allow: groups, groups: ["users"], operations: [create] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }
@@ -155,7 +162,8 @@ type TestResult @model(
   @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgTestResults")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
+      { allow: groups, groups: ["users"], operations: [create] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }
@@ -200,7 +208,8 @@ type Quarantine @model(
   @key(name: "byOrganization", fields: ["organizationId", "start"], queryField: "orgQuarantines")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
+      { allow: groups, groups: ["users"], operations: [create] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }
@@ -235,7 +244,8 @@ type VaccineDose @model(
   @key(name: "byVaccination", fields: ["vaccinationId", "date"], queryField: "vaccinationDoses")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
+      { allow: groups, groups: ["users"], operations: [create] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }
@@ -270,7 +280,8 @@ type Vaccination @model(
   @key(name: "byOrganization", fields: ["organizationId", "createdAt"], queryField: "orgVaccinations")
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, read] }
+      { allow: owner, ownerField: "userId", operations: [create, update, read] }
+      { allow: groups, groups: ["users"], operations: [create] }
       { allow: groups, groups: ["admins"] }
       { allow: groups, groupsField: "managementGroupId" }
       { allow: private, provider: iam }

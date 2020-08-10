@@ -1,4 +1,4 @@
-query OrgTestResults($organizationId: ID!, $nextToken: String!) {
+query OrgTestResults($organizationId: ID!, $nextToken: String) {
   orgTestResults(organizationId: $organizationId, limit: 10, nextToken: $nextToken) {
     items {
       ...TestResult

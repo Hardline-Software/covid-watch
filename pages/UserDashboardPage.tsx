@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
-import { StyleSheet, Image, Text, View } from 'react-native'
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableOpacity, StyleSheet, ScrollView, Image, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Widget from '../components/Widget'
 import DailyCheckupWidget from '../components/DailyCheckupWidget'
-import Navigator from '../components/Navigator'
+import TestResultsWidget from '../components/TestResultsWidget'
+import Pulldown from '../components/Pulldown'
 import { useAuthUser } from '../hooks/useAuthUser'
 import { useUserDashboardQuery } from '../generated/graphql'
+import VaccinationsWidget from '../components/VaccinationsWidget'
+import PersonalQuarantineWidget from '../components/PersonalQuarantineWidget'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import Modal from 'react-native-modal'
+import CheckupPopup from '../components/CheckupPopup'
 
 const UserDashboardPage = () => {
   const { user } = useAuthUser()
@@ -16,15 +20,36 @@ const UserDashboardPage = () => {
     },
     skip: !user
   })
-  console.log(data?.user)
+
+  const [isModalVisible, setModalVisible] = useState(false)
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible)
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Navigator />
-      <DailyCheckupWidget />
-      <Widget title="Test Results"></Widget>
-      <Widget title="Quarantine"></Widget>
-      <Widget title="Vaccinations"></Widget>
-    </SafeAreaView>
+    <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
+        <SafeAreaView style={styles.container}>
+          <Pulldown name={data?.user?.givenName} />
+          <DailyCheckupWidget />
+          <TestResultsWidget />
+          <VaccinationsWidget />
+          <PersonalQuarantineWidget />
+        </SafeAreaView>
+      </ScrollView>
+      <Modal isVisible={isModalVisible} coverScreen={true}>
+        <CheckupPopup closeFunction={toggleModal} />
+      </Modal>
+      <TouchableOpacity
+        style={styles.thermo}
+        onPress={() => {
+          toggleModal()
+        }}
+      >
+        <MaterialCommunityIcons name="thermometer-plus" size={40} color="white" />
+      </TouchableOpacity>
+    </View>
   )
 }
 
@@ -34,6 +59,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'column',
     paddingHorizontal: 10
+  },
+  thermo: {
+    backgroundColor: 'lightpink',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 20,
+    right: 20
   }
 })
 
