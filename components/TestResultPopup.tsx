@@ -19,8 +19,12 @@ type TestResultPopupProps = {
 const TestResultPopup: FC<TestResultPopupProps> = (props) => {
   const [testCenterName, setTestCenterName] = useState('')
   const [testName, setTestName] = useState('')
-  const [testDate, setTestDate] = useState('')
-  const [resultDate, setResultDate] = useState('')
+  const [testDay, setTestDay] = useState('')
+  const [testMonth, setTestMonth] = useState('')
+  const [testYear, setTestYear] = useState('')
+  const [resultDay, setResultDay] = useState('')
+  const [resultMonth, setResultMonth] = useState('')
+  const [resultYear, setResultYear] = useState('')
   const [result, setResult] = useState('')
 
   const { user } = useAuthUser()
@@ -69,22 +73,52 @@ const TestResultPopup: FC<TestResultPopupProps> = (props) => {
       ></TextInput>
       <TextInput
         style={styles.textInput}
-        placeholder="Test Date"
-        value={testDate}
-        onChangeText={(newVal: string) => setTestDate(newVal)}
-      ></TextInput>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Result Date"
-        value={resultDate}
-        onChangeText={(newVal: string) => setResultDate(newVal)}
-      ></TextInput>
-      <TextInput
-        style={styles.textInput}
         placeholder="Result"
         value={result}
         onChangeText={(newVal: string) => setResult(newVal)}
       ></TextInput>
+      <Text>Test Date</Text>
+      <View style={styles.date}>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="MM"
+          value={testMonth}
+          onChangeText={(newVal: string) => setTestMonth(newVal)}
+        ></TextInput>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="DD"
+          value={testDay}
+          onChangeText={(newVal: string) => setTestDay(newVal)}
+        ></TextInput>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="YYYY"
+          value={testYear}
+          onChangeText={(newVal: string) => setTestYear(newVal)}
+        ></TextInput>
+      </View>
+      <Text>Results Date</Text>
+      <View style={styles.date}>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="MM"
+          value={resultMonth}
+          onChangeText={(newVal: string) => setResultMonth(newVal)}
+        ></TextInput>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="DD"
+          value={resultDay}
+          onChangeText={(newVal: string) => setResultDay(newVal)}
+        ></TextInput>
+        <TextInput
+          style={styles.dateInput}
+          placeholder="YYYY"
+          value={resultYear}
+          onChangeText={(newVal: string) => setResultYear(newVal)}
+        ></TextInput>
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
@@ -95,8 +129,8 @@ const TestResultPopup: FC<TestResultPopupProps> = (props) => {
               location: testCenterName,
               type: TestType.VIRAL,
               retest: false,
-              started: testDate,
-              completed: resultDate,
+              started: testYear+'-'+testMonth+'-'+testDay,
+              completed: resultYear+'-'+resultMonth+'-'+resultDay,
               organizationId: user!.organizationId
             }
           }).then(() => {
@@ -175,6 +209,17 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 7.5,
     alignContent: 'flex-end'
+  },
+  date: {
+    flexDirection: 'row'
+  },
+  dateInput: {
+    padding: 10,
+    backgroundColor: '#F2F2F2',
+    width: '10%',
+    margin: 5,
+    borderRadius: 7.5,
+    textAlign: 'center'
   }
 })
 
