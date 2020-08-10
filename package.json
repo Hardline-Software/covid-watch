@@ -4,7 +4,6 @@
     "start": "npm run generate && expo start",
     "android": "npm run generate && expo start --android",
     "ios": "npm run generate && expo start --ios",
-    "web": "npm run generate && expo start --web",
     "generate": "graphql-codegen",
     "amplify:covidwatchPostAuthentication": "cd ./amplify/backend/function/covidwatchPostAuthentication/src && npm run build",
     "amplify:orgUserGroups": "cd ./amplify/backend/function/orgUserGroups/src && npm install && npm run build",
