@@ -10,6 +10,7 @@ import UserSignUpPage from './pages/UserSignUpPage'
 import OrgSignUpPage from './pages/OrgSignUpPage'
 import OrgDashboardPage from './pages/OrgDashboardPage'
 import PreSignUpPage from './pages/PreSignUpPage'
+import UserProfilePage from './pages/UserProfilePage'
 import client from './client'
 import Amplify from 'aws-amplify'
 import configuration from './aws-exports'
@@ -30,6 +31,7 @@ const App = () => (
           <Stack.Screen name="Organization Signup" options={{ headerShown: true }} component={OrgSignUpPage} />
           <Stack.Screen name="User Dashboard" options={{ headerShown: false }} component={UserDashboardPage} />
           <Stack.Screen name="Organization Dashboard" options={{ headerShown: false }} component={OrgDashboardPage} />
+          <Stack.Screen name="Profile" options={{ headerShown: true }} component={UserProfilePage} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
