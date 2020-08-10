@@ -37,17 +37,27 @@ const QuarantinesWidget = () => {
           <TouchableOpacity style={{ alignItems: 'flex-end', padding: 10 }} onPress={toggleModal}>
             <MaterialIcons name="add" size={30} color="black" />
           </TouchableOpacity>
-          <View>
-              {loadingQ ? (
-                <Text>Loading...</Text>
-              ) : (
-                dataQ?.orgQuarantines?.items?.map((item, key) => (
-                  <Text style={styles.memberList} key={item?.id}>
-                    {item?.user?.givenName} {item?.user?.familyName}
-                  </Text>
-                ))
-              )}
-            </View>
+          <View style={styles.quarantine}>
+            {loadingQ ? (
+              <Text>Loading...</Text>
+            ) : (
+              dataQ?.orgQuarantines?.items?.map((item, key) => (
+                <View style={styles.memberList} key={item?.id}>
+                  <View style={styles.quarantineTextHead}>
+                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>
+                      {item?.user?.givenName} {item?.user?.familyName}
+                    </Text>
+                  </View>
+                  <View style={styles.quarantineTextBody1}>
+                    <Text>{item?.location}</Text>
+                  </View>
+                  <View style={styles.quarantineTextBody2}>
+                    <Text>{item?.start + ' to ' + item?.end}</Text>
+                  </View>
+                </View>
+              ))
+            )}
+          </View>
         </>
       }
     >
@@ -68,7 +78,35 @@ const styles = StyleSheet.create({
   },
   memberList: {
     fontSize: 20,
-    padding: 10
+    padding: 10,
+    flexDirection: 'row'
+  },
+  quarantine: {
+    alignItems: 'center'
+  },
+  quarantineTextHead: {
+    backgroundColor: 'deepskyblue',
+    borderBottomLeftRadius: 7.5,
+    borderTopLeftRadius: 7.5,
+    padding: 5,
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  quarantineTextBody1: {
+    backgroundColor: 'white',
+    width: '10%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: -5
+  },
+  quarantineTextBody2: {
+    backgroundColor: 'white',
+    borderBottomRightRadius: 7.5,
+    borderTopRightRadius: 7.5,
+    width: '30%',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
