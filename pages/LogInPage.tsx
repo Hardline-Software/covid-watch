@@ -380,15 +380,6 @@ const LogInPage = () => {
             </TouchableOpacity>
           )}
         </View>
-        <TouchableOpacity
-          style={styles.section}
-          onPress={() => {
-            // Redirect to dashboard page
-            navigation.navigate('Sign Up')
-          }}
-        >
-          <Text>Sign Up</Text>
-        </TouchableOpacity>
       </View>
     )
   }
