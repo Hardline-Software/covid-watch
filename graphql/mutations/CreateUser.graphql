@@ -1,5 +1,6 @@
 mutation CreateUser(
   $id: ID!
+  $role: UserRole!
   $givenName: String!
   $familyName: String!
   $email: String!
@@ -11,6 +12,7 @@ mutation CreateUser(
   createUser(
     input: {
       id: $id
+      role: $role
       givenName: $givenName
       familyName: $familyName
       email: $email
