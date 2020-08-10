@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { StyleSheet, Image, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Image, Text, View, FlatList, ScrollView } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Widget from '../components/Widget'
 import QuarantinesWidget from '../components/QuarantinesWidget'
 import { useOrgUsersQuery, useOrgQuarantinesQuery } from '../generated/graphql'
 import { useAuthUser } from '../hooks/useAuthUser'
+import ManageMembersWidget from '../components/ManageMembersWidget'
 
 const OrgDashboardPage = () => {
   const { user } = useAuthUser()
@@ -24,33 +25,17 @@ const OrgDashboardPage = () => {
   var memberArray = ['Alex', 'Gent', 'Kirk']
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>The Ohio State University</Text>
-      </View>
+    <ScrollView>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>The Ohio State University</Text>
+        </View>
 
-      <QuarantinesWidget />
+        <QuarantinesWidget />
 
-      <Widget
-        title="Manage Members"
-        expandable={false}
-        base={
-          <View style={styles.quarantineBox}>
-            <View>
-              {loadingU ? (
-                <Text>Loading...</Text>
-              ) : (
-                dataU?.orgUsers?.items?.map((item, key) => (
-                  <Text style={styles.memberList} key={item?.id}>
-                    {item?.givenName} {item?.familyName}
-                  </Text>
-                ))
-              )}
-            </View>
-          </View>
-        }
-      ></Widget>
-    </SafeAreaView>
+        <ManageMembersWidget />
+      </SafeAreaView>
+    </ScrollView>
   )
 }
 
@@ -66,7 +51,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 40,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   quarantineBox: {
     padding: 15

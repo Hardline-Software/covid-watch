@@ -7,6 +7,7 @@ import QuarantinePopup from '../components/QuarantinesPopup'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useAuthUser } from '../hooks/useAuthUser'
 import { useOrgQuarantinesQuery } from '../generated/graphql'
+import AddTestResult from './AddTestResult'
 
 const QuarantinesWidget = () => {
   const { user } = useAuthUser()
@@ -34,9 +35,6 @@ const QuarantinesWidget = () => {
           <Modal style={styles.quarantinePopup} isVisible={isModalVisible} coverScreen={true}>
             <QuarantinePopup closeFunction={toggleModal} />
           </Modal>
-          <TouchableOpacity style={{ alignItems: 'flex-end', padding: 10 }} onPress={toggleModal}>
-            <MaterialIcons name="add" size={30} color="black" />
-          </TouchableOpacity>
           <View style={styles.quarantine}>
             {loadingQ ? (
               <Text>Loading...</Text>
@@ -58,6 +56,7 @@ const QuarantinesWidget = () => {
               ))
             )}
           </View>
+          <AddTestResult toggleFunction={toggleModal} />
         </>
       }
     >

@@ -69,7 +69,7 @@ const LogInPage = () => {
         // Redirect to user dasboard page
         navigation.reset({
           index: 0,
-          routes: [{ name: 'User Dashboard' }]
+          routes: [{ name: ' Dashboard' }]
         })
       }
     } catch (err) {
