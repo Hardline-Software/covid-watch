@@ -3,6 +3,8 @@ import { StyleSheet, Image, Text, View, ActivityIndicator } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { Auth } from 'aws-amplify'
+import { useApolloClient } from '@apollo/client'
+import { UserQuery, UserQueryVariables, UserDocument, UserRole } from '../generated/graphql'
 
 type LoginError =
   | 'UserNotConfirmedException'
@@ -13,6 +15,7 @@ type LoginError =
 type LoginChallenge = 'SMS_MFA' | 'SOFTWARE_TOKEN_MFA' | 'NEW_PASSWORD_REQUIRED' | 'MFA_SETUP'
 
 const LogInPage = () => {
+  const client = useApolloClient()
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -28,6 +31,29 @@ const LogInPage = () => {
   const [invalidMfaCode, setInvalidMfaCode] = useState(false)
   const [user, setUser] = useState<any>(null)
   const navigation = useNavigation()
+
+  const redirect = useCallback(
+    async (user) => {
+      const { data } = await client.query<UserQuery, UserQueryVariables>({
+        query: UserDocument,
+        variables: {
+          id: user.username
+        }
+      })
+      if (data?.user?.role === UserRole.MANAGER) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Organization Dashboard' }]
+        })
+      } else {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'User Dashboard' }]
+        })
+      }
+    },
+    [client, navigation]
+  )
 
   const login = useCallback(async () => {
     setErrorCode(null)
@@ -67,10 +93,7 @@ const LogInPage = () => {
         // The user directly signs in
         console.log(user)
         // Redirect to user dasboard page
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Profile' }]
-        })
+        redirect(user)
       }
     } catch (err) {
       console.log(err)
@@ -128,10 +151,7 @@ const LogInPage = () => {
     try {
       await Auth.confirmSignIn(user, mfaCode).then(() => {
         // Redirect to dashboard page
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'User Dashboard' }]
-        })
+        redirect(user)
       })
     } catch (err) {
       console.error(err)
