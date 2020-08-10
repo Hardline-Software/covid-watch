@@ -2,49 +2,23 @@ import React, { FC, Component, useState, useEffect } from 'react'
 import Widget from './Widget'
 import { StyleSheet, Text, View, FlatList, Alert, TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useCreateTestResultMutation, TestResultStatus, TestType } from '../generated/graphql'
+import { useAuthUser } from '../hooks/useAuthUser'
 
 type TestResultPopupProps = {
   closeFunction(): void
 }
 
 const TestResultPopup: FC<TestResultPopupProps> = (props) => {
-  const [testResults, setTestResults] = useState<object[]>([])
-
   const [testCenterName, setTestCenterName] = useState('')
   const [testName, setTestName] = useState('')
   const [testDate, setTestDate] = useState('')
   const [resultDate, setResultDate] = useState('')
   const [result, setResult] = useState('')
 
-  useEffect(() => {
-    console.log(testResults)
-  }, [testResults])
+  const { user } = useAuthUser()
 
-  const addTestResultHandler = (
-    testCenterName: string,
-    testName: string,
-    testDate: string,
-    resultDate: string,
-    result: string
-  ) => {
-    setTestResults([...testResults, generateTestResult(testCenterName, testName, testDate, resultDate, result)])
-  }
-
-  const generateTestResult = (
-    centerName: string,
-    testName: string,
-    testDate: string,
-    resultDate: string,
-    result: string
-  ) => {
-    return {
-      centerName: centerName,
-      testName: testName,
-      testDate: testDate,
-      resultDate: resultDate,
-      result: result
-    }
-  }
+  const [createTestResult] = useCreateTestResultMutation()
 
   return (
     <View style={styles.container}>
@@ -80,7 +54,22 @@ const TestResultPopup: FC<TestResultPopupProps> = (props) => {
       ></TextInput>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => addTestResultHandler(testCenterName, testName, testDate, resultDate, result)}
+        onPress={() =>
+          createTestResult({
+            variables: {
+              userId: user!.id,
+              status: strToStatus(result),
+              location: testCenterName,
+              type: TestType.VIRAL,
+              retest: false,
+              started: testDate,
+              completed: resultDate,
+              organizationId: user!.organizationId
+            }
+          }).then(() => {
+            props.closeFunction()
+          })
+        }
       >
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Add Test Result</Text>
       </TouchableOpacity>
@@ -89,6 +78,21 @@ const TestResultPopup: FC<TestResultPopupProps> = (props) => {
       </TouchableOpacity>
     </View>
   )
+}
+
+const strToStatus = (str: string) => {
+  switch (str.toLowerCase()) {
+    case 'in progress':
+      return TestResultStatus.IN_PROGRESS
+    case 'negative':
+      return TestResultStatus.NEGATIVE
+    case 'positive':
+      return TestResultStatus.POSITIVE
+    case 'requested':
+      return TestResultStatus.REQUESTED
+    default:
+      return TestResultStatus.INCONCLUSIVE
+  }
 }
 
 const styles = StyleSheet.create({

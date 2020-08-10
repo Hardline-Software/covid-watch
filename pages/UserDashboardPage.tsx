@@ -7,6 +7,7 @@ import Pulldown from '../components/Pulldown'
 import { useAuthUser } from '../hooks/useAuthUser'
 import { useUserDashboardQuery } from '../generated/graphql'
 import VaccinationsWidget from '../components/VaccinationsWidget'
+import PersonalQuarantineWidget from '../components/PersonalQuarantineWidget'
 
 const UserDashboardPage = () => {
   const { user } = useAuthUser()
@@ -23,6 +24,7 @@ const UserDashboardPage = () => {
         <DailyCheckupWidget />
         <TestResultsWidget />
         <VaccinationsWidget />
+        <PersonalQuarantineWidget />
       </SafeAreaView>
     </ScrollView>
   )

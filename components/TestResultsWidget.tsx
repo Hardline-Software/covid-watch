@@ -5,7 +5,7 @@ import TestResult from './TestResult'
 import AddTestResult from './AddTestResult'
 import Modal from 'react-native-modal'
 import TestResultPopup from '../components/TestResultPopup'
-import { useUserTestResultsQuery, TestResultFragment } from '../generated/graphql'
+import { useUserTestResultsQuery } from '../generated/graphql'
 import { useAuthUser } from '../hooks/useAuthUser'
 
 const TestResultsWidget = () => {
