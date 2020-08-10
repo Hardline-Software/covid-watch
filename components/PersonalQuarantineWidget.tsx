@@ -92,11 +92,13 @@ const PersonalQuarantine = () => {
         )
       }
     >
-      <View style={{ ...styles.container, backgroundColor: '#b5ffc3' }}>
-        <Text style={{ fontSize: 12 }}>
-          Quarantine ends on {format(new Date(data!.userQuarantines!.items![0]!.end), 'MM/dd/yyyy')}
-        </Text>
-      </View>
+      {data?.userQuarantines && data.userQuarantines.items!.length > 0 && (
+        <View style={{ ...styles.container, backgroundColor: '#b5ffc3' }}>
+          <Text style={{ fontSize: 12 }}>
+            Quarantine ends on {format(new Date(data!.userQuarantines!.items![0]!.end), 'MM/dd/yyyy')}
+          </Text>
+        </View>
+      )}
     </Widget>
   )
 }
