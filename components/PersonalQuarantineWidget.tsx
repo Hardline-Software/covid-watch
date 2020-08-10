@@ -1,15 +1,11 @@
 import React from 'react'
 import Widget from './Widget'
-import { StyleSheet, Text, View, FlatList } from 'react-native'
-import Symptom from './Symptom'
+import { StyleSheet, Text, View } from 'react-native'
+import { useAuthUser } from '../hooks/useAuthUser'
+import { useQuarantineQuery } from '../generated/graphql'
 
 const PersonalQuarantine = () => {
-  const symptoms: object[] = [{}, {}] // TODO hook into backend
-  const temp = 38
-
-  const cToF = (c: number) => {
-    return (c * 9) / 5 + 32
-  }
+  const { user } = useAuthUser()
 
   return (
     <Widget
@@ -18,41 +14,11 @@ const PersonalQuarantine = () => {
       base={
         <>
           <View style={styles.container}>
-            <View>
-              <Text style={{ fontWeight: 'bold', fontSize: 28 }}>{cToF(temp).toFixed(1)}&#186;F</Text>
-            </View>
-            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{symptoms.length}&nbsp;</Text>
-              <Text>symptoms</Text>
-            </View>
+            <Text>0 days in quarantine</Text>
           </View>
-          {(temp > 37.778 || symptoms.length > 2) && (
-            <View style={styles.container}>
-              <Text style={{ fontWeight: 'bold', fontSize: 14, color: 'red' }}>
-                You may want to speak with your primary care provider.
-              </Text>
-            </View>
-          )}
         </>
       }
-    >
-      <View style={styles.container}>
-        <View>
-          <Text style={{ fontWeight: 'bold', fontSize: 14 }}>
-            {symptoms.length > 0 ? 'Today you are feeling:' : "You didn't report any symptoms today!"}
-          </Text>
-          {symptoms.length > 0 && (
-            <View style={styles.symptoms}>
-              <FlatList
-                data={symptoms}
-                renderItem={({ item, index }) => <Symptom desc={'symptom ' + index} />}
-                keyExtractor={(item: object, index: number) => `${index}`}
-              />
-            </View>
-          )}
-        </View>
-      </View>
-    </Widget>
+    ></Widget>
   )
 }
 
@@ -62,9 +28,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
-  },
-  symptoms: {
-    flexDirection: 'column'
   }
 })
 

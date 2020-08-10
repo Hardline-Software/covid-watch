@@ -1,27 +1,19 @@
 import React, { FC, Component, useState, useEffect } from 'react'
 import { StyleSheet, Text, View, FlatList, Alert, TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { VaccinationFragment } from '../generated/graphql'
+import { useCreateVaccinationMutation } from '../generated/graphql'
+import { useAuthUser } from '../hooks/useAuthUser'
 
 type VaccinationsPopupProps = {
   closeFunction(): void
 }
 
 const VaccinationsPopup: FC<VaccinationsPopupProps> = (props) => {
-  const [vaccines, setVaccines] = useState<object[]>([])
   const [name, setName] = useState('')
-  const [date, setDate] = useState('')
 
-  const addTestResultHandler = (vaccineName: string, vaccineDate: string) => {
-    setVaccines([...vaccines, generateVaccine(vaccineName, vaccineDate)])
-  }
+  const { user } = useAuthUser()
 
-  const generateVaccine = (name: string, date: string) => {
-    return {
-      vaccine: name,
-      createdAt: date
-    }
-  }
+  const [createVaccination] = useCreateVaccinationMutation()
 
   return (
     <View style={styles.container}>
@@ -31,13 +23,20 @@ const VaccinationsPopup: FC<VaccinationsPopupProps> = (props) => {
         value={name}
         onChangeText={(newVal: string) => setName(newVal)}
       ></TextInput>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Vaccination Date"
-        value={date}
-        onChangeText={(newVal: string) => setDate(newVal)}
-      ></TextInput>
-      <TouchableOpacity style={styles.button} onPress={() => addTestResultHandler(name, date)}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>
+          createVaccination({
+            variables: {
+              userId: user!.id,
+              organizationId: user!.organizationId,
+              vaccine: name
+            }
+          }).then(() => {
+            props.closeFunction()
+          })
+        }
+      >
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Add Vaccine</Text>
       </TouchableOpacity>
       <TouchableOpacity style={{ ...styles.button, backgroundColor: '#c70202' }} onPress={props.closeFunction}>

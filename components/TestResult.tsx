@@ -52,20 +52,16 @@ const styles = StyleSheet.create({
   }
 })
 
-const getBackgroundColor = (result: TestStatus) => {
+const getBackgroundColor = (result: TestResultStatus) => {
   switch (result) {
-    case TestStatus.POSITIVE:
+    case TestResultStatus.POSITIVE:
       return 'darkred'
-      break
-    case TestStatus.INPROGRESS:
+    case TestResultStatus.IN_PROGRESS:
       return '#dea300'
-      break
-    case TestStatus.NEGATIVE:
+    case TestResultStatus.NEGATIVE:
       return '#26bf00'
-      break
     default:
       return '#E8E8E8'
-      break
   }
 }
 

@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native'
 import Modal from 'react-native-modal'
 import VaccinationsPopup from './VaccinationsPopup'
 import AddVaccination from './AddTestResult'
-import { useUserVaccinationsQuery, VaccinationFragment } from '../generated/graphql'
+import { useUserVaccinationsQuery } from '../generated/graphql'
 import { useAuthUser } from '../hooks/useAuthUser'
 import Vaccination from './Vaccination'
 
