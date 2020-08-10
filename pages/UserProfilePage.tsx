@@ -5,9 +5,12 @@ import { useAuthUser } from '../hooks/useAuthUser'
 import { useUserDashboardQuery } from '../generated/graphql'
 import Modal from 'react-native-modal'
 import HealthSummaryPopup from '../components/HealthSummaryPopup'
+import { Auth } from 'aws-amplify'
+import { useNavigation } from '@react-navigation/native'
 
 const UserProfilePage = () => {
   const { user } = useAuthUser()
+  const navigation = useNavigation()
 
   const [isModalVisible, setModalVisible] = useState(false)
 
@@ -45,11 +48,18 @@ const UserProfilePage = () => {
             <Text style={styles.currentOrgText}>No Organization</Text>
           )}
         </View>
-
-        <TouchableOpacity style={{ flex: 1, width: '100%', alignItems: 'center' }} onPress={toggleModal}>
-          <View style={styles.healthSum}>
-            <Text style={styles.currentOrgText}>View Health Summary</Text>
-          </View>
+        <TouchableOpacity
+          style={styles.healthSum}
+          onPress={() => {
+            Auth.signOut().then(() => {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Log In' }]
+              })
+            })
+          }}
+        >
+          <Text style={styles.currentOrgText}>Sign Out</Text>
         </TouchableOpacity>
       </SafeAreaView>
     </ScrollView>
@@ -83,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   userInfoText: {
-    color: 'lightgray',
+    color: 'black',
     fontSize: 15,
     marginVertical: 3
   },
