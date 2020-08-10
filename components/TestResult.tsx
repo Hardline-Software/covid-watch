@@ -38,7 +38,14 @@ const TestResult: FC<TestResultProps> = ({ data }) => {
           ? 'In Progress'
           : 'Unknown'}
         {`\n`}
-        {format(new Date(data!.updatedAt!), 'MM/dd/yyyy')}
+        {format(
+          new Date(
+            data.status == TestResultStatus.IN_PROGRESS || data.status == TestResultStatus.REQUESTED
+              ? data!.started!
+              : data!.completed!
+          ),
+          'MM/dd/yyyy'
+        )}
       </Text>
     </View>
   )
