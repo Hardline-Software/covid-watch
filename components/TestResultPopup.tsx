@@ -2,7 +2,14 @@ import React, { FC, Component, useState, useEffect } from 'react'
 import Widget from './Widget'
 import { StyleSheet, Text, View, FlatList, Alert, TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useCreateTestResultMutation, TestResultStatus, TestType } from '../generated/graphql'
+import {
+  useCreateTestResultMutation,
+  TestResultStatus,
+  TestType,
+  UserTestResultsQuery,
+  UserTestResultsQueryVariables,
+  UserTestResultsDocument
+} from '../generated/graphql'
 import { useAuthUser } from '../hooks/useAuthUser'
 
 type TestResultPopupProps = {
@@ -18,7 +25,33 @@ const TestResultPopup: FC<TestResultPopupProps> = (props) => {
 
   const { user } = useAuthUser()
 
-  const [createTestResult] = useCreateTestResultMutation()
+  const [createTestResult] = useCreateTestResultMutation({
+    update: (cache, { data }) => {
+      if (data) {
+        const usersQuery = cache.readQuery<UserTestResultsQuery, UserTestResultsQueryVariables>({
+          query: UserTestResultsDocument,
+          variables: {
+            userId: data?.createTestResult?.userId!
+          }
+        })
+        if (usersQuery) {
+          cache.writeQuery<UserTestResultsQuery, UserTestResultsQueryVariables>({
+            query: UserTestResultsDocument,
+            variables: {
+              userId: data?.createTestResult?.userId!
+            },
+            data: {
+              ...usersQuery,
+              userTestResults: {
+                ...usersQuery.userTestResults,
+                items: [...usersQuery!.userTestResults!.items!, data.createTestResult!]
+              }
+            }
+          })
+        }
+      }
+    }
+  })
 
   return (
     <View style={styles.container}>

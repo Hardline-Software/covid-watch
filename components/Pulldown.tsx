@@ -14,9 +14,6 @@ const Pulldown: FC<PulldownProps> = ({ name }) => {
         <TouchableOpacity>
           <MaterialIcons name="person" size={40} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <MaterialCommunityIcons name="office-building" size={40} color="black" />
-        </TouchableOpacity>
       </View>
       <View style={styles.header}>
         <Text style={styles.headerText}>Welcome, {name}!</Text>
@@ -32,7 +29,7 @@ const styles = StyleSheet.create({
   },
   icons: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-end'
   },
   header: {
     alignItems: 'center',

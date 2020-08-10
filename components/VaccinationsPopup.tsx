@@ -1,7 +1,12 @@
 import React, { FC, Component, useState, useEffect } from 'react'
 import { StyleSheet, Text, View, FlatList, Alert, TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useCreateVaccinationMutation } from '../generated/graphql'
+import {
+  useCreateVaccinationMutation,
+  UserVaccinationsQuery,
+  UserVaccinationsQueryVariables,
+  UserVaccinationsDocument
+} from '../generated/graphql'
 import { useAuthUser } from '../hooks/useAuthUser'
 
 type VaccinationsPopupProps = {
@@ -13,7 +18,33 @@ const VaccinationsPopup: FC<VaccinationsPopupProps> = (props) => {
 
   const { user } = useAuthUser()
 
-  const [createVaccination] = useCreateVaccinationMutation()
+  const [createVaccination] = useCreateVaccinationMutation({
+    update: (cache, { data }) => {
+      if (data) {
+        const usersQuery = cache.readQuery<UserVaccinationsQuery, UserVaccinationsQueryVariables>({
+          query: UserVaccinationsDocument,
+          variables: {
+            userId: data?.createVaccination?.userId!
+          }
+        })
+        if (usersQuery) {
+          cache.writeQuery<UserVaccinationsQuery, UserVaccinationsQueryVariables>({
+            query: UserVaccinationsDocument,
+            variables: {
+              userId: data?.createVaccination?.userId!
+            },
+            data: {
+              ...usersQuery,
+              userVaccinations: {
+                ...usersQuery.userVaccinations,
+                items: [...usersQuery!.userVaccinations!.items!, data.createVaccination!]
+              }
+            }
+          })
+        }
+      }
+    }
+  })
 
   return (
     <View style={styles.container}>
