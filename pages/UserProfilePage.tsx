@@ -46,11 +46,6 @@ const UserProfilePage = () => {
           )}
         </View>
 
-        <TouchableOpacity style={{ flex: 1, width: '100%', alignItems: 'center' }} onPress={toggleModal}>
-          <View style={styles.healthSum}>
-            <Text style={styles.currentOrgText}>View Health Summary</Text>
-          </View>
-        </TouchableOpacity>
       </SafeAreaView>
     </ScrollView>
   )
